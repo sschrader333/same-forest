@@ -101,7 +101,7 @@
   /* crossings (timeline) */
   .spine { position: relative; padding-left: 26px; margin-top: 8px; }
   .spine::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: var(--rule); }
-  .x { position: relative; padding: 10px 0 18px; }
+  .x { position: relative; padding: 10px 0 18px; scroll-margin-top: 130px; }
   .x::before { content: ""; position: absolute; left: -26px; top: 18px; width: 16px; height: 16px; border-radius: 50%; background: var(--x-color, var(--paper-2)); border: 2px solid var(--ink); }
   .x .when { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: .04em; }
   .x .ttl { font-size: 1.18em; font-weight: 500; line-height: 1.25; text-wrap: balance; max-width: 30em; }
@@ -233,6 +233,10 @@
     @keyframes fade { from { opacity: .4; transform: translateY(4px); } to { opacity: 1; transform: none; } }
     @keyframes rise { from { opacity: .6; transform: translateY(12px); } to { opacity: 1; transform: none; } }
   }
+  .lnkcopy { font-family: var(--mono); font-size: 12px; color: inherit; opacity: .7; text-decoration: underline; text-underline-offset: 3px; margin-top: 8px; }
+  .lnkcopy:hover { opacity: 1; }
+  .person .top .right { display: flex; align-items: center; gap: 10px; }
+  .copyme { font-family: var(--mono); font-size: 13px; word-break: break-all; user-select: all; -webkit-user-select: all; padding: 10px 12px; background: var(--paper-2); border-radius: 4px; }
   .pthreads { display: flex; flex-wrap: wrap; gap: 6px; margin: -6px 0 14px; } .pthreads .chip { font-size: 12px; }
   .filters.threads { flex-wrap: wrap; } .filters.threads .chip .n { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-left: 6px; }
   .tnote { font-family: var(--serif); font-size: 17px; line-height: 1.45; margin: 4px 0 10px; max-width: 60ch; }
@@ -250,7 +254,7 @@
       <button id="nav-words" data-view="words">words</button>
       <button id="nav-threads" data-view="threads">threads</button>
       <button id="wander" title="open somebody at random">wander</button>
-      <a href="index.html" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
+      <a href="index.html?v=202609301742" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
     </nav>
   </header>
 
@@ -270,7 +274,7 @@
 <div id="sheet" class="sheet" role="dialog" aria-modal="true" hidden></div>
 <div id="person" class="person" role="dialog" aria-modal="true" hidden></div>
 
-<script src="data/forest.js"></script>
+<script src="data/forest.js?v=202609301742"></script>
 <script>
 (function () {
   const LC = { christian: 'peach', muslim: 'teal', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
@@ -282,7 +286,7 @@
   let people = {}, meetings = {}, terms = {};   // key -> doc
   let termRe = null, aliasKey = {};           // alias matcher
   let letter = null;
-  let view = 'forest', filter = null, q = '', sort = 'name', wq = '', thread = null;
+  let view = 'forest', filter = null, q = '', sort = 'name', wq = '', thread = null, openX = {};
   try { sort = localStorage.getItem('wf.sort') || 'name'; } catch (e) {}
   const SORTS = [['name', 'a to z'], ['old', 'oldest first'], ['new', 'newest first'], ['lineage', 'by lineage'], ['mess', 'messiest first'], ['shuffle', 'shuffle']];
   let loaded = false, canEdit = false, db = null;
@@ -352,7 +356,8 @@
   function wireLinks(root) {
     root.querySelectorAll('[data-term]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); openTerm(b.dataset.term); }));
     root.querySelectorAll('[data-person]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); openPerson(b.dataset.person); }));
-    root.querySelectorAll('[data-thread]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); closeSheet(); closePerson(); thread = b.dataset.thread; setView('threads'); }));
+    root.querySelectorAll('[data-thread]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); closeSheet(); closePerson(); thread = b.dataset.thread; setView('threads'); try { history.replaceState(null, '', '#t-' + encodeURIComponent(thread)); } catch (e2) {} tellParent('t-' + encodeURIComponent(thread)); }));
+    root.querySelectorAll('[data-share]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); copyLink(b.dataset.share); }));
     root.querySelectorAll('[data-meeting]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); closePerson(); setView('crossings', b.dataset.meeting); }));
   }
   function meetingsFor(key) {
@@ -362,6 +367,18 @@
     const p = people[k]; if (!p) return '';
     return `<button class="chip ${color(p)}" data-person="${esc(k)}">${esc(p.name)}</button>`;
   }
+  // a link to exactly this person, crossing or word, on the public site
+  const SHARE_BASE = 'https://www.stoketrailracing.com/same-forest';
+  function tellParent(hash) { try { if (window.parent && window.parent !== window) window.parent.postMessage({ sameForest: hash }, '*'); } catch (e) {} }
+  async function copyLink(hash) {
+    const url = SHARE_BASE + '#' + hash;
+    let ok = false;
+    try { await navigator.clipboard.writeText(url); ok = true; } catch (e) {
+      try { const ta = document.createElement('textarea'); ta.value = url; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); ok = document.execCommand('copy'); ta.remove(); } catch (e2) { ok = false; }
+    }
+    if (ok) toast('link copied.');
+    else openSheet('<h3>copy this link</h3><p class="copyme">' + esc(url) + '</p>');
+  }
   let toastT = null;
   function toast(msg) {
     let t = document.querySelector('.toast'); if (!t) { t = document.createElement('div'); t.className = 'toast'; document.body.appendChild(t); }
@@ -370,10 +387,12 @@
 
   // --- views
   function setView(v, focus) {
+    if (focus) openX[focus] = 1;
     view = v; render();
     document.querySelectorAll('.nav [data-view]').forEach((b) => b.setAttribute('aria-current', b.dataset.view === v ? 'true' : 'false'));
     try { history.replaceState(null, '', '#' + (focus ? 'x-' + focus : v)); } catch (e) {}
-    if (focus) { const el = viewEl.querySelector(`[data-x="${CSS.escape(focus)}"]`); if (el) { el.classList.add('open'); el.querySelector('.body').hidden = false; el.scrollIntoView({ block: 'start', behavior: 'smooth' }); } }
+    tellParent(focus ? 'x-' + focus : v);
+    if (focus) { const el = viewEl.querySelector(`[data-x="${CSS.escape(focus)}"]`); if (el) { el.scrollIntoView({ block: 'start' }); setTimeout(() => { const e2 = viewEl.querySelector(`[data-x="${CSS.escape(focus)}"]`); if (e2) e2.scrollIntoView({ block: 'start' }); }, 400); } }
     else window.scrollTo({ top: 0 });
   }
   function render() {
@@ -396,11 +415,11 @@
     } else if (view === 'forest') {
       wireForest();
     } else if (view === 'threads') {
-      viewEl.querySelectorAll('.threads .chip').forEach((c) => c.addEventListener('click', () => { thread = thread === c.dataset.t ? null : c.dataset.t; render(); try { history.replaceState(null, '', '#' + (thread ? 't-' + thread : 'threads')); } catch (e) {} }));
+      viewEl.querySelectorAll('.threads .chip').forEach((c) => c.addEventListener('click', () => { thread = thread === c.dataset.t ? null : c.dataset.t; render(); const hh = thread ? 't-' + encodeURIComponent(thread) : 'threads'; try { history.replaceState(null, '', '#' + hh); } catch (e) {} tellParent(hh); }));
       wireCards(viewEl);
     } else {
       viewEl.querySelectorAll('.x').forEach((x) => {
-        const tog = () => { const open = x.classList.toggle('open'); x.querySelector('.body').hidden = !open; };
+        const tog = () => { const open = x.classList.toggle('open'); x.querySelector('.body').hidden = !open; if (open) openX[x.dataset.x] = 1; else delete openX[x.dataset.x]; const hh = open ? 'x-' + x.dataset.x : 'crossings'; try { history.replaceState(null, '', '#' + hh); } catch (e) {} tellParent(hh); };
         x.querySelector('.ttl button').addEventListener('click', tog);
         x.querySelector('.more').addEventListener('click', tog);
       });
@@ -441,11 +460,11 @@
     return `<p class="count">${list.length} times they ran into each other, oldest first</p><div class="spine">` + list.map((m) => {
       const cols = (m.who || []).map((k) => people[k]).filter(Boolean).map(color);
       const grad = cols.length > 1 ? `linear-gradient(135deg, ${cols.map((c) => `var(--${c})`).join(', ')})` : (cols[0] ? `var(--${cols[0]})` : 'var(--paper-2)');
-      return `<article class="x" data-x="${esc(m.key)}" style="--x-color:${grad}">
+      return `<article class="x${openX[m.key] ? ' open' : ''}" data-x="${esc(m.key)}" style="--x-color:${grad}">
         <div class="when">${esc(m.when || '')}</div>
         <div class="ttl"><button aria-expanded="false">${esc(m.title)}</button></div>
         <div class="who">${(m.who || []).map(whoChip).join('')}</div>
-        <div class="body" hidden>${markup(m.lines)}${m.also && m.also.length ? `<div class="also">also in the room: ${esc(m.also.join(', '))}</div>` : ''}${m.where ? `<div class="where">${esc(m.where)}</div>` : ''}</div>
+        <div class="body"${openX[m.key] ? '' : ' hidden'}>${markup(m.lines)}${m.also && m.also.length ? `<div class="also">also in the room: ${esc(m.also.join(', '))}</div>` : ''}${m.where ? `<div class="where">${esc(m.where)}</div>` : ''}<button class="lnkcopy" data-share="x-${esc(m.key)}">copy link</button></div>
         <button class="more">read it</button>
       </article>`;
     }).join('') + '</div>';
@@ -463,7 +482,7 @@
     const i = order.indexOf(key); const prev = order[(i - 1 + order.length) % order.length], next = order[(i + 1) % order.length];
     personEl.className = `person ${c}`;
     personEl.innerHTML = `<div class="inner">
-      <div class="top"><button id="pclose">&larr; back</button><span class="lineage-lbl">${esc(p.lineage)}</span></div>
+      <div class="top"><button id="pclose">&larr; back</button><span class="right"><button data-share="${esc(key)}">copy link</button><span class="lineage-lbl">${esc(p.lineage)}</span></span></div>
       <div class="pic">${safeSvg(p.doodle && p.doodle.svg)}</div>
       <div class="head">${p.portrait ? `<div class="face">${safeSvg(p.portrait)}</div>` : ''}<h1>${esc(p.name)}</h1></div>
       <div class="meta">${p.years ? `<span>${esc(p.years)}</span>` : ''}${p.place ? `<span>${esc(p.place)}</span>` : ''}</div>
@@ -487,6 +506,7 @@
     $('pclose').addEventListener('click', closePerson);
     wireLinks(personEl);
     try { history.replaceState(null, '', '#' + key); } catch (e) {}
+    tellParent(key);
     document.body.style.overflow = 'hidden';
   }
   function closePerson() {
@@ -494,6 +514,7 @@
     personEl.hidden = true; backdrop.hidden = true; personEl.innerHTML = ''; openKey = null;
     document.body.style.overflow = '';
     try { history.replaceState(null, '', '#' + view); } catch (e) {}
+    tellParent(view);
   }
   backdrop.addEventListener('click', closePerson);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (!sheet.hidden) closeSheet(); else closePerson(); } });
@@ -527,7 +548,7 @@
     const re = new RegExp('(^|[^a-z0-9])(' + als.map((a) => a.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')(?![a-z0-9])', 'i');
     const who = als.length ? approved(people).filter((p) => p.key !== openKey && re.test([p.basically, p.story, p.struggle, p.mess, p.after, (p.moments || []).join(' '), (p.said || []).map((s) => s.q + ' ' + s.where).join(' ')].join(' '))).sort((a, b) => a.name.localeCompare(b.name)) : [];
     const whoHtml = who.length ? `<div class="inforest"><span class="lbl">in the forest</span>${who.slice(0, 12).map((p) => whoChip(p.key)).join('')}${who.length > 12 ? `<span class="lbl">and ${who.length - 12} more</span>` : ''}</div>` : '';
-    openSheet(`<h3>${esc(t.name || key)}</h3><div class="kind">${esc(t.kind || 'word')}</div>${lines}${linkHtml}${whoHtml}`);
+    openSheet(`<h3>${esc(t.name || key)}</h3><div class="kind">${esc(t.kind || 'word')}</div>${lines}${linkHtml}${whoHtml}<button class="lnkcopy" data-share="w-${esc(key)}">copy link</button>`);
   }
 
   // --- words (the glossary)
@@ -554,7 +575,7 @@
     if (thread) {
       const ps = list.filter((p) => (p.threads || []).includes(thread)).sort((a, b) => born(a) - born(b) || a.name.localeCompare(b.name));
       const ts = approved(terms).filter((t) => (t.threads || []).includes(thread)).sort((a, b) => (a.name || a.key).localeCompare(b.name || b.key));
-      body = `<p class="tnote">${esc(TNOTE[thread] || '')}</p><p class="count">${ps.length} ${ps.length === 1 ? 'person' : 'people'}, oldest first</p><div class="grid">${ps.map((p) => `<button class="card ${color(p)}" data-person="${esc(p.key)}">
+      body = `<p class="tnote">${esc(TNOTE[thread] || '')} <button class="lnkcopy" data-share="t-${esc(encodeURIComponent(thread))}">copy link</button></p><p class="count">${ps.length} ${ps.length === 1 ? 'person' : 'people'}, oldest first</p><div class="grid">${ps.map((p) => `<button class="card ${color(p)}" data-person="${esc(p.key)}">
       <div class="pic">${safeSvg(p.doodle && p.doodle.svg)}${p.portrait ? `<div class="face">${safeSvg(p.portrait)}</div>` : ''}</div>
       <div class="txt"><span class="lineage-lbl">${esc(p.lineage)}</span><span class="nm">${esc(p.name)}</span><span class="yr">${esc(p.years || '')}</span><span class="hit">${esc(p.hit || '')}</span></div>
     </button>`).join('') || '<p class="empty" style="margin-top:8px">nobody yet.</p>'}</div>` +

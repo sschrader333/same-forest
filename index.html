@@ -108,7 +108,9 @@
 
   /* spread */
   .spread { margin-top: 28px; }
-  .theme { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: .04em; margin: 0 2px 14px 2px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .theme { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: .04em; margin: 0 2px 14px 2px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 12px; }
+  .theme .acts { display: flex; gap: 14px; }
+  .copyme { font-family: var(--mono); font-size: 13px; word-break: break-all; user-select: all; -webkit-user-select: all; padding: 10px 12px; background: var(--paper-2); border-radius: 4px; }
   .about-link { font: inherit; letter-spacing: 0; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
   .about-link:hover { color: var(--ink); }
   .pages { display: grid; grid-template-columns: 1fr; gap: 10px; position: relative; }
@@ -210,6 +212,7 @@
     @keyframes fade { from { opacity: .4; transform: translateY(4px); } to { opacity: 1; transform: none; } }
   }
 </style>
+<script>(function(){var h=location.hash.slice(1);if(h&&!/^\d{4}-\d{2}-\d{2}$/.test(h))location.replace('the-whole-forest.html?v=202609301742#'+h);})();</script>
 </head>
 <body>
 <div class="wrap">
@@ -219,7 +222,7 @@
       <button id="prev" title="earlier">&larr;</button>
       <button id="datebtn" class="datebtn" title="all days">&nbsp;</button>
       <button id="next" title="later">&rarr;</button>
-      <a class="forest" href="the-whole-forest.html" title="the whole forest: the people behind the spreads"><span>the whole </span>forest &rarr;</a>
+      <a class="forest" href="the-whole-forest.html?v=202609301742" title="the whole forest: the people behind the spreads"><span>the whole </span>forest &rarr;</a>
     </nav>
   </header>
   <main id="main">
@@ -233,7 +236,7 @@
 <div id="backdrop" class="backdrop" hidden></div>
 <div id="sheet" class="sheet" role="dialog" aria-modal="true" hidden></div>
 
-<script src="data/spreads.js"></script>
+<script src="data/spreads.js?v=202609301742"></script>
 <script>
 (function () {
   const LINEAGE_COLOR = { christian: 'peach', muslim: 'teal', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
@@ -319,7 +322,7 @@
     const el = document.createElement('article');
     el.className = 'spread';
     el.innerHTML = `
-      <div class="theme"><span>${esc(s.theme || '')}</span><button class="about-link" id="aboutbtn">what is this?</button></div>
+      <div class="theme"><span>${esc(s.theme || '')}</span><span class="acts"><button class="about-link" id="sharebtn">copy link</button><button class="about-link" id="aboutbtn">what is this?</button></span></div>
       <div class="pages">${pageHtml('left', s.left, refs)}${pageHtml('right', s.right, refs)}</div>
       ${svg ? `<div class="doodle">${svg}</div>` : ''}
       ${s.caption ? `<div class="doodle-cap">${esc(s.caption)}</div>` : ''}
@@ -328,7 +331,21 @@
     main.appendChild(el);
     el.querySelectorAll('.ref').forEach((b) => b.addEventListener('click', () => openRef(refs[b.dataset.ref], b.textContent)));
     el.querySelector('#aboutbtn').addEventListener('click', () => openSheet('<h3>what is this</h3>' + ABOUT));
+    el.querySelector('#sharebtn').addEventListener('click', (e) => copyLink(s.id, e.currentTarget));
     try { if (location.hash.slice(1) !== s.id) history.replaceState(null, '', '#' + s.id); } catch (e) {}
+    try { if (window.parent && window.parent !== window) window.parent.postMessage({ sameForest: s.id }, '*'); } catch (e) {}
+  }
+
+  // a link to exactly this day, on the public site
+  const SHARE_BASE = 'https://www.stoketrailracing.com/same-forest';
+  async function copyLink(hash, btn) {
+    const url = SHARE_BASE + '#' + hash;
+    let ok = false;
+    try { await navigator.clipboard.writeText(url); ok = true; } catch (e) {
+      try { const ta = document.createElement('textarea'); ta.value = url; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); ok = document.execCommand('copy'); ta.remove(); } catch (e2) { ok = false; }
+    }
+    if (ok) { if (btn) { btn.textContent = 'copied'; setTimeout(() => { btn.textContent = 'copy link'; }, 1800); } }
+    else openSheet('<h3>copy this link</h3><p class="copyme">' + esc(url) + '</p>');
   }
 
   // --- sheet (references + day index)
