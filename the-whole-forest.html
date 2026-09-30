@@ -24,6 +24,7 @@
     --lavender: #D8CCE6;
     --clay: #D9A98C;
     --teal: #A6D6D1;
+    --olive: #CDD28E;
     --page-ink: #2A2420;
     --sheet: #FBF8F2;
     --shadow: 0 -8px 30px rgba(42,36,32,.18);
@@ -35,14 +36,14 @@
     :root:not([data-theme="light"]) {
       color-scheme: dark;
       --paper: #191614; --paper-2: #211D1A; --ink: #EDE6DC; --muted: #A0958A; --rule: #3A332E;
-      --peach: #4A3327; --blue: #26384A; --marigold: #4A3D1A; --sage: #2C3D32; --lavender: #3B3347; --clay: #4E2E24; --teal: #1F3F3C;
+      --peach: #4A3327; --blue: #26384A; --marigold: #4A3D1A; --sage: #2C3D32; --lavender: #3B3347; --clay: #4E2E24; --teal: #1F3F3C; --olive: #3A3E1E;
       --page-ink: #EDE6DC; --sheet: #241F1C; --shadow: 0 -8px 30px rgba(0,0,0,.5); --wash: rgba(255,255,255,.07);
     }
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
     --paper: #191614; --paper-2: #211D1A; --ink: #EDE6DC; --muted: #A0958A; --rule: #3A332E;
-    --peach: #4A3327; --blue: #26384A; --marigold: #4A3D1A; --sage: #2C3D32; --lavender: #3B3347; --clay: #4E2E24; --teal: #1F3F3C;
+    --peach: #4A3327; --blue: #26384A; --marigold: #4A3D1A; --sage: #2C3D32; --lavender: #3B3347; --clay: #4E2E24; --teal: #1F3F3C; --olive: #3A3E1E;
     --page-ink: #EDE6DC; --sheet: #241F1C; --shadow: 0 -8px 30px rgba(0,0,0,.5); --wash: rgba(255,255,255,.07);
   }
 
@@ -77,7 +78,7 @@
   .chip .dot { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--page-ink); opacity: .9; }
   .chip[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
   .chip[aria-pressed="true"] .dot { border-color: var(--paper); }
-  .dot.peach { background: var(--peach); } .dot.blue { background: var(--blue); } .dot.marigold { background: var(--marigold); } .dot.sage { background: var(--sage); } .dot.lavender { background: var(--lavender); } .dot.clay { background: var(--clay); } .dot.teal { background: var(--teal); }
+  .dot.peach { background: var(--peach); } .dot.blue { background: var(--blue); } .dot.marigold { background: var(--marigold); } .dot.sage { background: var(--sage); } .dot.lavender { background: var(--lavender); } .dot.clay { background: var(--clay); } .dot.teal { background: var(--teal); } .dot.olive { background: var(--olive); }
   .search { margin-left: auto; font-family: var(--mono); font-size: 13px; color: var(--ink); background: var(--paper-2); border: 1px solid var(--rule); border-radius: 999px; padding: 7px 12px; min-width: 0; width: 160px; }
   .search::placeholder { color: var(--muted); }
 
@@ -95,7 +96,7 @@
   .card .nm { font-size: 1.12em; font-weight: 500; line-height: 1.2; }
   .card .yr { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; opacity: .7; }
   .card .hit { font-size: .95em; line-height: 1.35; opacity: .9; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-  .peach { background: var(--peach); } .blue { background: var(--blue); } .marigold { background: var(--marigold); } .sage { background: var(--sage); } .lavender { background: var(--lavender); } .clay { background: var(--clay); } .teal { background: var(--teal); }
+  .peach { background: var(--peach); } .blue { background: var(--blue); } .marigold { background: var(--marigold); } .sage { background: var(--sage); } .lavender { background: var(--lavender); } .clay { background: var(--clay); } .teal { background: var(--teal); } .olive { background: var(--olive); }
   .lineage-lbl { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; opacity: .65; }
 
   /* crossings (timeline) */
@@ -203,6 +204,13 @@
   .tree.dim { opacity: .35; }
   .path { fill: none; stroke: var(--ink); stroke-width: 1.5; opacity: .12; stroke-dasharray: 3 7; pointer-events: none; }
   .path.on { opacity: .8; stroke-width: 2.5; }
+  .fork { cursor: pointer; }
+  .fork path { stroke: var(--ink); stroke-width: 3.5px; opacity: .5; }
+  .fork path.within { stroke-width: 2px; stroke-dasharray: 7 6; }
+  .fork path.hit { stroke: transparent; stroke-width: 22px; opacity: 1; pointer-events: stroke; }
+  .fork text { font-family: var(--mono); font-size: 11px; fill: var(--ink); stroke: var(--paper); stroke-width: 3px; paint-order: stroke fill; opacity: .8; }
+  .fork:hover path:not(.hit), .fork:focus path:not(.hit) { opacity: 1; }
+  .forktag { border: 1.5px solid currentColor; border-radius: 999px; padding: 0 6px; margin-right: 6px; font-size: 10.5px; letter-spacing: .08em; }
   .grove-lbl { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; fill: var(--muted); stroke: none; }
   .forest-hint { font-family: var(--mono); font-size: 12px; color: var(--muted); margin: 8px 2px 0; }
   .years text { font-family: var(--mono); font-size: 10px; fill: var(--muted); }
@@ -254,7 +262,7 @@
       <button id="nav-words" data-view="words">words</button>
       <button id="nav-threads" data-view="threads">threads</button>
       <button id="wander" title="open somebody at random">wander</button>
-      <a href="index.html?v=202609301742" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
+      <a href="index.html?v=202609302056" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
     </nav>
   </header>
 
@@ -274,11 +282,11 @@
 <div id="sheet" class="sheet" role="dialog" aria-modal="true" hidden></div>
 <div id="person" class="person" role="dialog" aria-modal="true" hidden></div>
 
-<script src="data/forest.js?v=202609301742"></script>
+<script src="data/forest.js?v=202609302056"></script>
 <script>
 (function () {
-  const LC = { christian: 'peach', muslim: 'teal', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
-  const LNAME = { christian: 'bible, and the christians', muslim: 'the muslims', buddhist: 'the buddhists', hindu: 'the hindus', tao: 'the tao', native: 'turtle island', other: 'the rest of us' };
+  const LC = { jewish: 'olive', christian: 'peach', muslim: 'teal', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
+  const LNAME = { jewish: 'the jews', christian: 'the christians', muslim: 'the muslims', buddhist: 'the buddhists', hindu: 'the hindus', tao: 'the tao', native: 'turtle island', other: 'the rest of us' };
   const THREADS = ['psychedelics', 'addiction', 'grief', 'doubt', 'anger', 'nonviolence', 'dying', 'the body', 'money', 'exile', 'prison', 'war', 'family', 'loneliness', 'joy', 'silence', 'work', 'forgiveness', 'madness', 'wandering', 'love', 'the land', 'fame'];
   const TNOTE = { psychedelics: 'the mushroom, the acid, the cactus. what it did for people and what it cost them. nobody here is telling you to take anything.', addiction: 'drink, drugs, the thing you cannot put down.', grief: 'somebody died and they had to keep going.', doubt: 'the years where none of it felt true.', anger: 'the ones who had a temper, or were right to be furious.', nonviolence: 'the ones who would not hit back, and what it cost.', dying: 'how they faced it, their own or somebody else\'s.', 'the body': 'sickness, pain, hunger, sex, the animal you live in.', money: 'having it, giving it away, being broke.', exile: 'thrown out, run off, far from home.', prison: 'locked up, and what they made of it.', war: 'soldiers, survivors, the ones who refused.', family: 'parents, kids, marriages, the people you cannot pick.', loneliness: 'alone, sometimes on purpose.', joy: 'the ones who were, somehow, happy.', silence: 'the ones who shut up and listened.', work: 'the daily grind as the practice.', forgiveness: 'letting it go, or trying to.', madness: 'breakdowns, panic, visions the doctors had another word for.', wandering: 'the road, the pilgrimage, the not staying put.', love: 'the ones who loved somebody, or everybody.', 'the land': 'the ground under them and what it meant.', fame: 'being known, and what it does to a person.' };
   const $ = (id) => document.getElementById(id);
@@ -461,7 +469,7 @@
       const cols = (m.who || []).map((k) => people[k]).filter(Boolean).map(color);
       const grad = cols.length > 1 ? `linear-gradient(135deg, ${cols.map((c) => `var(--${c})`).join(', ')})` : (cols[0] ? `var(--${cols[0]})` : 'var(--paper-2)');
       return `<article class="x${openX[m.key] ? ' open' : ''}" data-x="${esc(m.key)}" style="--x-color:${grad}">
-        <div class="when">${esc(m.when || '')}</div>
+        <div class="when">${m.fork ? `<span class="forktag">${m.fork.kind === 'graft' ? 'graft' : 'fork'}</span>` : ''}${esc(m.when || '')}</div>
         <div class="ttl"><button aria-expanded="false">${esc(m.title)}</button></div>
         <div class="who">${(m.who || []).map(whoChip).join('')}</div>
         <div class="body"${openX[m.key] ? '' : ' hidden'}>${markup(m.lines)}${m.also && m.also.length ? `<div class="also">also in the room: ${esc(m.also.join(', '))}</div>` : ''}${m.where ? `<div class="where">${esc(m.where)}</div>` : ''}<button class="lnkcopy" data-share="x-${esc(m.key)}">copy link</button></div>
@@ -585,7 +593,7 @@
   }
 
   // --- the forest itself
-  const GROVES = ['christian', 'muslim', 'buddhist', 'hindu', 'tao', 'native', 'other'];
+  const GROVES = ['jewish', 'christian', 'muslim', 'buddhist', 'hindu', 'tao', 'native', 'other'];
   function xOfYear(y) { // piecewise: old years squeezed, modern years stretched
     const segs = [[-1400, 0, 60, 260], [0, 1500, 260, 620], [1500, 1900, 620, 1000], [1900, 2030, 1000, 1370]];
     for (const [a, b, xa, xb] of segs) if (y >= a && y <= b) return xa + (y - a) / (b - a) * (xb - xa);
@@ -600,6 +608,7 @@
     else if (p.lineage === 'hindu') body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.5}'/><path d='M ${x - w * 0.3} ${y} L ${x - w * 0.25} ${y - h * 0.45} M ${x + w * 0.3} ${y} L ${x + w * 0.25} ${y - h * 0.45}' opacity='.6'/><path class='canopy' d='M ${x - w * 0.6} ${y - h * 0.5} C ${x - w * 0.6} ${y - h * 0.9} ${x + w * 0.6} ${y - h * 0.9} ${x + w * 0.6} ${y - h * 0.5} C ${x + w * 0.3} ${y - h * 0.42} ${x - w * 0.3} ${y - h * 0.42} ${x - w * 0.6} ${y - h * 0.5} Z' fill='${c}'/>`;
     else if (p.lineage === 'tao') body = `<path d='M ${x} ${y} C ${x - 2} ${y - h * 0.4} ${x + 3} ${y - h * 0.6} ${x} ${y - h * 0.75}'/><path class='canopy' d='M ${x - w * 0.5} ${y - h * 0.55} C ${x - w * 0.5} ${y - h * 1.05} ${x + w * 0.5} ${y - h * 1.05} ${x + w * 0.5} ${y - h * 0.55} C ${x + w * 0.45} ${y - h * 0.25} ${x + w * 0.2} ${y - h * 0.1} ${x + w * 0.2} ${y - h * 0.35} C ${x} ${y - h * 0.05} ${x - w * 0.2} ${y - h * 0.15} ${x - w * 0.2} ${y - h * 0.35} C ${x - w * 0.3} ${y - h * 0.1} ${x - w * 0.5} ${y - h * 0.25} ${x - w * 0.5} ${y - h * 0.55} Z' fill='${c}'/>`;
     else if (p.lineage === 'native') body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.4} M ${x} ${y - h * 0.4} L ${x - w * 0.22} ${y - h * 0.62} M ${x} ${y - h * 0.4} L ${x + w * 0.2} ${y - h * 0.6}'/><path class='canopy' d='M ${x - w * 0.55} ${y - h * 0.6} C ${x - w * 0.6} ${y - h * 0.85} ${x - w * 0.25} ${y - h * 1.02} ${x} ${y - h * 0.9} C ${x + w * 0.25} ${y - h * 1.04} ${x + w * 0.6} ${y - h * 0.85} ${x + w * 0.55} ${y - h * 0.6} C ${x + w * 0.5} ${y - h * 0.45} ${x + w * 0.2} ${y - h * 0.4} ${x} ${y - h * 0.48} C ${x - w * 0.2} ${y - h * 0.4} ${x - w * 0.5} ${y - h * 0.45} ${x - w * 0.55} ${y - h * 0.6} Z' fill='${c}'/>`;
+    else if (p.lineage === 'jewish') body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.92}'/><ellipse class='canopy' cx='${x}' cy='${y - h * 0.42}' rx='${w * 0.6}' ry='${h * 0.11}' fill='${c}'/><ellipse class='canopy' cx='${x}' cy='${y - h * 0.66}' rx='${w * 0.44}' ry='${h * 0.1}' fill='${c}'/><ellipse class='canopy' cx='${x}' cy='${y - h * 0.88}' rx='${w * 0.26}' ry='${h * 0.09}' fill='${c}'/>`;
     else if (p.lineage === 'muslim') body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.24}'/><path class='canopy' d='M ${x} ${y - h * 1.08} C ${x + w * 0.44} ${y - h * 0.72} ${x + w * 0.38} ${y - h * 0.26} ${x} ${y - h * 0.22} C ${x - w * 0.38} ${y - h * 0.26} ${x - w * 0.44} ${y - h * 0.72} ${x} ${y - h * 1.08} Z' fill='${c}'/>`;
     else body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.55}'/><path d='M ${x - 3} ${y - h * 0.25} L ${x - 5} ${y - h * 0.22} M ${x + 3} ${y - h * 0.4} L ${x + 5} ${y - h * 0.37}' opacity='.5'/><ellipse class='canopy' cx='${x}' cy='${y - h * 0.72}' rx='${w * 0.32}' ry='${h * 0.3}' fill='${c}'/>`;
     const label = p.name.length > 16 ? p.name.split(' ').slice(-1)[0] : p.name;
@@ -612,7 +621,7 @@
     if (!list.length) return '';
     const W = 1400, bandH = 150, top = 20, left = 24, right = 40;
     const bands = {}; GROVES.forEach((g, i) => bands[g] = top + i * bandH);
-    treePos = {};
+    treePos = {}; const bandTrees = {};
     GROVES.forEach((g) => {
       const ps = list.filter((p) => p.lineage === g).sort((a, b) => born(a) - born(b) || a.name.localeCompare(b.name));
       if (!ps.length) return;
@@ -622,6 +631,7 @@
       const span = xs[xs.length - 1] - xs[0], avail = W - left - right - 80;
       if (span > avail) { const x0 = xs[0]; xs = xs.map((x) => left + 40 + (x - x0) / span * avail); }
       else if (xs[xs.length - 1] > W - right - 40) { const d = xs[xs.length - 1] - (W - right - 40); xs = xs.map((x) => x - d); }
+      bandTrees[g] = ps.map((p, i) => ({ yr: born(p), x: xs[i] }));
       ps.forEach((p, i) => {
         const age = 2030 - born(p);
         const size = Math.max(34, Math.min(66, 30 + Math.log(age + 10) * 5.2));
@@ -629,7 +639,26 @@
         treePos[p.key] = { x: xs[i], y: bands[g] + bandH - 40 - row * 9, size, row };
       });
     });
-    const paths = approved(meetings).filter((m) => (m.who || []).length >= 2).map((m) => {
+    const xAtYear = (g, yr) => { const a = bandTrees[g] || []; if (!a.length) return null; if (yr <= a[0].yr) return a[0].x - 20; for (let i = 1; i < a.length; i++) if (yr <= a[i].yr) { const p0 = a[i - 1], p1 = a[i]; return p1.yr === p0.yr ? p1.x : p0.x + (yr - p0.yr) / (p1.yr - p0.yr) * (p1.x - p0.x); } return a[a.length - 1].x + 20; };
+    const forks = approved(meetings).filter((m) => m.fork && ((m.fork.at && treePos[m.fork.at]) || (typeof m.fork.year === 'number' && m.fork.to in bands && xAtYear(m.fork.to, m.fork.year) != null))).map((m) => {
+      const f = m.fork, to = (f.at && people[f.at] && people[f.at].lineage) || f.to;
+      const inner = typeof f.year === 'number' && !(f.at && treePos[f.at]);
+      const t = inner ? { x: xAtYear(to, f.year), y: bands[to] + bandH - 40, size: 0 } : treePos[f.at];
+      const froms = (Array.isArray(f.from) ? f.from : [f.from]).filter((g) => g in bands);
+      const lbl = esc(f.label || '');
+      const segs = froms.map((g, n) => {
+        if (g === to) { const gy = bands[g] + bandH - 40; const d = `M ${t.x} ${bands[g] + 18} L ${t.x} ${gy + 6}`; return `<path class='hit' d='${d}'/><path class='within' d='${d}'/>`; }
+        const y0 = bands[g] + bandH - 40, down = bands[to] > bands[g];
+        const x0 = t.x - 22 + n * 44, y1 = down ? t.y - t.size * 1.02 : t.y + 2;
+        const my = (y0 + y1) / 2;
+        const d = `M ${x0} ${y0} C ${x0} ${my} ${t.x} ${my} ${t.x} ${y1}`; return `<path class='hit' d='${d}'/><path d='${d}'/>`;
+      }).join('');
+      if (!segs) return '';
+      const within = froms.length === 1 && froms[0] === to;
+      const lx = within ? t.x + 6 : Math.max(t.x + 22, 150); const ly = within ? bands[to] + 9 : bands[to] + 27;
+      return `<g class='fork' data-fork='${esc(m.key)}' tabindex='0' role='button' aria-label='${esc(m.title || 'fork')}'>${segs}${lbl ? (within ? `<text x='${lx}' y='${ly}'>${lbl}</text>` : `<text x='${lx}' y='${ly}'>&#8601; ${lbl}</text>`) : ''}</g>`;
+    }).join('');
+    const paths = approved(meetings).filter((m) => !m.fork && (m.who || []).length >= 2).map((m) => {
       const ks = m.who.filter((k) => treePos[k]); if (ks.length < 2) return '';
       const a = treePos[ks[0]], b = treePos[ks[1]];
       const mx = (a.x + b.x) / 2, my = Math.min(a.y, b.y) - 50;
@@ -640,11 +669,12 @@
     const taoOld = list.filter((p) => p.lineage === 'tao').sort((a, b) => born(a) - born(b))[0];
     const owl = taoOld && treePos[taoOld.key] ? (() => { const t = treePos[taoOld.key]; const sc = 0.9; return `<g transform='translate(${t.x + t.size * 0.22},${t.y - t.size * 0.5 - 27 * sc}) scale(${sc})' fill='none' stroke='var(--page-ink)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' opacity='.85'><ellipse cx='12' cy='15' rx='8' ry='9'/><path d='M6 8 L4 2 L9 6 M18 8 L20 2 L15 6'/><circle cx='8.5' cy='12' r='3'/><circle cx='15.5' cy='12' r='3'/><circle cx='8.5' cy='12' r='1' fill='var(--page-ink)'/><circle cx='15.5' cy='12' r='1' fill='var(--page-ink)'/><path d='M12 14 l -1.5 2.5 h 3 z' fill='var(--page-ink)'/><path d='M9 24 l -2 3 M15 24 l 2 3'/></g>`; })() : '';
     const H = top + bandH * GROVES.length + 6;
-    return `<div class="forestwrap"><svg viewBox='0 0 ${W} ${H}' fill='none' stroke='var(--page-ink)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' role='img' aria-label='the whole forest'>${grounds}${paths}${trees}${owl}</svg></div>
-      <p class="forest-hint">six groves. in each one the oldest roots are on the left and the newest on the right, and the bigger the tree the older it is. the dotted paths are where two of them crossed. tap a tree.${list.length ? ` ${list.length} trees so far.` : ''}</p>`;
+    return `<div class="forestwrap"><svg viewBox='0 0 ${W} ${H}' fill='none' stroke='var(--page-ink)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' role='img' aria-label='the whole forest'>${grounds}${forks}${paths}${trees}${owl}</svg></div>
+      <p class="forest-hint">${['no','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'][GROVES.length] || GROVES.length} groves. in each one the oldest roots are on the left and the newest on the right, and the bigger the tree the older it is. the dotted paths are where two of them crossed. a solid root is where one grove grew out of another. tap a tree, or a root.${list.length ? ` ${list.length} trees so far.` : ''}</p>`;
   }
   function wireForest() {
     const svg = viewEl.querySelector('svg'); if (!svg) return;
+    svg.querySelectorAll('.fork').forEach((f) => { const go = () => setView('crossings', f.dataset.fork); f.addEventListener('click', go); f.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } }); });
     const trees = [...svg.querySelectorAll('.tree')], paths = [...svg.querySelectorAll('.path')];
     const lit = (k) => { trees.forEach((t) => { t.classList.toggle('dim', !!k && t.dataset.person !== k && !paths.some((p) => p.classList.contains('on') && (p.dataset.a === t.dataset.person || p.dataset.b === t.dataset.person))); }); };
     trees.forEach((t) => {

@@ -22,6 +22,7 @@
     --lavender: #D8CCE6;
     --clay: #D9A98C;
     --teal: #A6D6D1;
+    --olive: #CDD28E;
     --page-ink: #2A2420;
     --sheet: #FBF8F2;
     --shadow: 0 -8px 30px rgba(42,36,32,.18);
@@ -41,7 +42,7 @@
       --blue: #26384A;
       --marigold: #4A3D1A;
       --sage: #2C3D32;
-      --lavender: #3B3347; --clay: #4E2E24; --teal: #1F3F3C;
+      --lavender: #3B3347; --clay: #4E2E24; --teal: #1F3F3C; --olive: #3A3E1E;
       --page-ink: #EDE6DC;
       --sheet: #241F1C;
       --shadow: 0 -8px 30px rgba(0,0,0,.5);
@@ -59,7 +60,7 @@
     --blue: #26384A;
     --marigold: #4A3D1A;
     --sage: #2C3D32;
-    --lavender: #3B3347; --clay: #4E2E24; --teal: #1F3F3C;
+    --lavender: #3B3347; --clay: #4E2E24; --teal: #1F3F3C; --olive: #3A3E1E;
     --page-ink: #EDE6DC;
     --sheet: #241F1C;
     --shadow: 0 -8px 30px rgba(0,0,0,.5);
@@ -129,6 +130,7 @@
   .page.lavender { background: var(--lavender); }
   .page.clay { background: var(--clay); }
   .page.teal { background: var(--teal); }
+  .page.olive { background: var(--olive); }
   .page .side { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; opacity: .6; }
   .page .body { flex: 1; display: flex; flex-direction: column; gap: 10px; max-width: 34em; }
   .page p { margin: 0; }
@@ -212,7 +214,7 @@
     @keyframes fade { from { opacity: .4; transform: translateY(4px); } to { opacity: 1; transform: none; } }
   }
 </style>
-<script>(function(){var h=location.hash.slice(1);if(h&&!/^\d{4}-\d{2}-\d{2}$/.test(h))location.replace('the-whole-forest.html?v=202609301742#'+h);})();</script>
+<script>(function(){var h=location.hash.slice(1);if(h&&!/^\d{4}-\d{2}-\d{2}$/.test(h))location.replace('the-whole-forest.html?v=202609302056#'+h);})();</script>
 </head>
 <body>
 <div class="wrap">
@@ -222,7 +224,7 @@
       <button id="prev" title="earlier">&larr;</button>
       <button id="datebtn" class="datebtn" title="all days">&nbsp;</button>
       <button id="next" title="later">&rarr;</button>
-      <a class="forest" href="the-whole-forest.html?v=202609301742" title="the whole forest: the people behind the spreads"><span>the whole </span>forest &rarr;</a>
+      <a class="forest" href="the-whole-forest.html?v=202609302056" title="the whole forest: the people behind the spreads"><span>the whole </span>forest &rarr;</a>
     </nav>
   </header>
   <main id="main">
@@ -236,10 +238,10 @@
 <div id="backdrop" class="backdrop" hidden></div>
 <div id="sheet" class="sheet" role="dialog" aria-modal="true" hidden></div>
 
-<script src="data/spreads.js?v=202609301742"></script>
+<script src="data/spreads.js?v=202609302056"></script>
 <script>
 (function () {
-  const LINEAGE_COLOR = { christian: 'peach', muslim: 'teal', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
+  const LINEAGE_COLOR = { jewish: 'olive', christian: 'peach', muslim: 'teal', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
   const $ = (id) => document.getElementById(id);
   const main = $('main'), empty = $('empty'), sheet = $('sheet'), backdrop = $('backdrop');
   let spreads = [];      // newest first
@@ -364,8 +366,12 @@
   }
   function openIndex() {
     if (!spreads.length) return;
-    const items = spreads.map((s) => `<li><button data-go="${esc(s.id)}"><span class="d">${esc(fmtDate(s.id))}</span><span class="t">${esc(s.theme || (s.left && s.left.text || '').split('\n')[0])}</span></button></li>`).join('');
-    openSheet(`<h3>all days</h3><ul class="index">${items}</ul>`);
+    const t = denverToday();
+    const waiting = all.filter((s) => s.id > t).length;
+    const items = spreads.map((s) => `<li><button data-go="${esc(s.id)}"><span class="d">${esc(fmtDate(s.id))}${s.id > t ? ' · not out yet' : ''}</span><span class="t">${esc(s.theme || (s.left && s.left.text || '').split('\n')[0])}</span></button></li>`).join('');
+    const peek = canLookAhead && waiting ? `<p><button class="about-link" id="aheadbtn">${ahead ? 'hide the days that are not out yet' : 'look ahead: ' + waiting + ' written and waiting'}</button></p>` : '';
+    openSheet(`<h3>all days</h3>${peek}<ul class="index">${items}</ul>`);
+    const ab = sheet.querySelector('#aheadbtn'); if (ab) ab.addEventListener('click', () => { ahead = !ahead; apply(); openIndex(); });
     sheet.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => { current = b.dataset.go; closeSheet(); render(); window.scrollTo({ top: 0 }); }));
   }
   backdrop.addEventListener('click', closeSheet);
@@ -393,17 +399,30 @@
   }, { passive: true });
 
   // --- data
-  function accept(list) {
-    spreads = list.filter((s) => s && s.id).sort((a, b) => (a.id < b.id ? 1 : -1));
+  // days are written ahead of time. a day stays out of sight until it arrives, by the clock in denver.
+  let all = [], ahead = false, canLookAhead = false;
+  function denverToday() {
+    try { return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()); }
+    catch (e) { return new Date().toISOString().slice(0, 10); }
+  }
+  function apply() {
+    const t = denverToday();
+    spreads = ahead ? all : all.filter((s) => s.id <= t);
     const want = (location.hash || '').slice(1);
-    if (!current || !spreads.some((s) => s.id === current)) current = spreads.some((s) => s.id === want) ? want : (spreads[0] && spreads[0].id) || null;
+    if (!current || !spreads.some((s) => s.id === current)) current = spreads.some((s) => s.id === want) ? want : ((spreads.find((s) => s.id <= t) || spreads[0] || {}).id || null);
     render();
   }
+  function accept(list) {
+    all = list.filter((s) => s && s.id).sort((a, b) => (a.id < b.id ? 1 : -1));
+    apply();
+  }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && all.length) apply(); });
   try { const c = (window.SAME_FOREST_SPREADS || null); if (Array.isArray(c) && c.length) accept(c); else render(); } catch (e) { render(); }
 
   (async () => {
     const db = window.claude && window.claude.use ? await window.claude.use('db') : null;
     if (!db) { loaded = true; render(); return; }
+    canLookAhead = true;
     db.collection('spreads').orderBy('date', 'desc').limit(400).onSnapshot((snap) => {
       loaded = true;
       accept(snap.docs.filter((d) => d.exists).map((d) => Object.assign({ id: d.id }, d.data())));
