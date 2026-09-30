@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="the whole forest: the people the traditions keep quoting, what they said, what they got wrong, and every time two of them crossed paths.">
+<meta name="robots" content="noindex">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<title>the whole forest</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* layout: one column of paper, people as colored pages in a grid, crossings as a spine down the middle.
+     the same tokens as the devotional so the two feel like one book. */
+  :root {
+    --paper: #F4EFE6;
+    --paper-2: #ECE5D9;
+    --ink: #2A2420;
+    --muted: #7A6F66;
+    --rule: #D9D0C3;
+    --peach: #F3C9AA;
+    --blue: #BDD3E6;
+    --marigold: #F2D389;
+    --sage: #C5D6BD;
+    --lavender: #D8CCE6;
+    --clay: #D9A98C;
+    --page-ink: #2A2420;
+    --sheet: #FBF8F2;
+    --shadow: 0 -8px 30px rgba(42,36,32,.18);
+    --wash: rgba(255,255,255,.35);
+    --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #191614; --paper-2: #211D1A; --ink: #EDE6DC; --muted: #A0958A; --rule: #3A332E;
+      --peach: #4A3327; --blue: #26384A; --marigold: #4A3D1A; --sage: #2C3D32; --lavender: #3B3347; --clay: #4E2E24;
+      --page-ink: #EDE6DC; --sheet: #241F1C; --shadow: 0 -8px 30px rgba(0,0,0,.5); --wash: rgba(255,255,255,.07);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #191614; --paper-2: #211D1A; --ink: #EDE6DC; --muted: #A0958A; --rule: #3A332E;
+    --peach: #4A3327; --blue: #26384A; --marigold: #4A3D1A; --sage: #2C3D32; --lavender: #3B3347; --clay: #4E2E24;
+    --page-ink: #EDE6DC; --sheet: #241F1C; --shadow: 0 -8px 30px rgba(0,0,0,.5); --wash: rgba(255,255,255,.07);
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--serif); font-size: 17px; line-height: 1.45; margin: 0; -webkit-font-smoothing: antialiased; }
+  button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-align: left; }
+  button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 2px; }
+  a { color: inherit; }
+  p { margin: 0; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding-inline: 16px; padding-block: 0 64px; }
+
+  /* top bar */
+  .bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 14px 10px; border-bottom: 1px solid var(--rule); flex-wrap: wrap; }
+  .brand { font-family: var(--mono); font-size: 13px; letter-spacing: .04em; color: var(--muted); white-space: nowrap; }
+  .brand b { font-weight: 500; color: var(--ink); }
+  .brand .owl { vertical-align: -3px; margin-right: 8px; color: var(--muted); opacity: .8; }
+  .brand button { font: inherit; color: inherit; }
+  .nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  .nav button, .nav a { font-family: var(--mono); font-size: 13px; color: var(--ink); padding: 8px 10px; border-radius: 4px; text-decoration: none; }
+  .nav button:hover, .nav a:hover { background: var(--paper-2); }
+  .nav button[aria-current="true"] { background: var(--ink); color: var(--paper); }
+  .nav a { color: var(--muted); }
+  @media (max-width: 560px) { .brand span { display: none; } .nav a span { display: none; } }
+
+  /* intro */
+  .intro { margin: 26px 0 18px; max-width: 34em; color: var(--muted); }
+  .intro b { color: var(--ink); font-weight: 500; }
+
+  /* filters */
+  .filters { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 16px; }
+  .chip { font-family: var(--mono); font-size: 12px; border: 1.5px solid var(--rule); border-radius: 999px; padding: 5px 11px; line-height: 1.2; color: var(--ink); display: inline-flex; align-items: center; gap: 7px; }
+  .chip .dot { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--page-ink); opacity: .9; }
+  .chip[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+  .chip[aria-pressed="true"] .dot { border-color: var(--paper); }
+  .dot.peach { background: var(--peach); } .dot.blue { background: var(--blue); } .dot.marigold { background: var(--marigold); } .dot.sage { background: var(--sage); } .dot.lavender { background: var(--lavender); } .dot.clay { background: var(--clay); }
+  .search { margin-left: auto; font-family: var(--mono); font-size: 13px; color: var(--ink); background: var(--paper-2); border: 1px solid var(--rule); border-radius: 999px; padding: 7px 12px; min-width: 0; width: 160px; }
+  .search::placeholder { color: var(--muted); }
+
+  /* people grid */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .card { color: var(--page-ink); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; transition: transform .15s ease; }
+  .card:hover { transform: translateY(-2px); }
+  .card .pic { aspect-ratio: 4 / 3; max-width: 100%; background: var(--paper-2); position: relative; }
+  .card .face { position: absolute; right: 12px; bottom: -26px; width: 78px; height: 78px; border-radius: 50%; background: var(--paper); border: 2px solid var(--page-ink); overflow: hidden; }
+  .card .face svg { display: block; width: 100%; height: 100%; }
+  .card .txt { padding-top: 14px; padding-right: 96px; }
+  .card .hit { padding-right: 0; }
+  .card .pic svg { display: block; width: 100%; height: 100%; }
+  .card .txt { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; }
+  .card .nm { font-size: 1.12em; font-weight: 500; line-height: 1.2; }
+  .card .yr { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; opacity: .7; }
+  .card .hit { font-size: .95em; line-height: 1.35; opacity: .9; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .peach { background: var(--peach); } .blue { background: var(--blue); } .marigold { background: var(--marigold); } .sage { background: var(--sage); } .lavender { background: var(--lavender); } .clay { background: var(--clay); }
+  .lineage-lbl { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; opacity: .65; }
+
+  /* crossings (timeline) */
+  .spine { position: relative; padding-left: 26px; margin-top: 8px; }
+  .spine::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: var(--rule); }
+  .x { position: relative; padding: 10px 0 18px; }
+  .x::before { content: ""; position: absolute; left: -26px; top: 18px; width: 16px; height: 16px; border-radius: 50%; background: var(--x-color, var(--paper-2)); border: 2px solid var(--ink); }
+  .x .when { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+  .x .ttl { font-size: 1.18em; font-weight: 500; line-height: 1.25; text-wrap: balance; max-width: 30em; }
+  .x .ttl button { text-align: left; }
+  .x .who { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .x .who .chip { border-color: transparent; color: var(--page-ink); }
+  .x .body { margin-top: 10px; max-width: 36em; display: flex; flex-direction: column; gap: 8px; }
+  .x .body[hidden] { display: none; }
+  .x .where { font-family: var(--mono); font-size: 12px; color: var(--muted); line-height: 1.5; margin-top: 4px; }
+  .x .more { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .x .more::after { content: " \2193"; }
+  .x.open .more::after { content: " \2191"; }
+  .x .also { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+  /* inline person links inside text */
+  .pl { display: inline; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px; border-radius: 2px; padding-inline: 1px; }
+  .pl:hover { background: var(--wash); }
+
+  /* person page (sheet over everything) */
+  .backdrop { position: fixed; inset: 0; background: rgba(20,15,12,.4); z-index: 20; }
+  .person { position: fixed; inset: 0; z-index: 21; overflow: auto; -webkit-overflow-scrolling: touch; color: var(--page-ink); }
+  .person .inner { background: inherit; min-height: 100%; max-width: 760px; margin: 0 auto; padding: 0 16px calc(48px + env(safe-area-inset-bottom, 0px)); }
+  .person .top { position: sticky; top: 0; display: flex; justify-content: space-between; align-items: center; padding: calc(10px + env(safe-area-inset-top, 0px)) 0 8px; background: inherit; z-index: 2; }
+  .person .top button { font-family: var(--mono); font-size: 13px; padding: 6px 8px; border-radius: 4px; }
+  .person .top button:hover { background: var(--wash); }
+  .person .pic { border-radius: 4px; overflow: hidden; background: var(--paper-2); max-width: 100%; }
+  .person .pic svg { display: block; width: 100%; height: auto; }
+  .person .picnote { font-family: var(--mono); font-size: 12px; color: var(--page-ink); opacity: .7; line-height: 1.55; margin: 8px 2px 0; max-width: 60em; }
+  .person .head { display: flex; gap: 18px; align-items: flex-end; margin-top: 22px; }
+  .person .face { flex: 0 0 auto; width: 112px; height: 112px; border-radius: 50%; background: var(--paper); border: 2.5px solid var(--page-ink); overflow: hidden; }
+  .person .face svg { display: block; width: 100%; height: 100%; }
+  .person .head h1 { margin-top: 0; }
+  .person .moments { display: flex; flex-direction: column; gap: 10px; }
+  .person .moments p { padding-left: 14px; border-left: 2px solid var(--page-ink); }
+  .person .after { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border-radius: 4px; background: var(--wash); }
+  .person .struggle { display: flex; flex-direction: column; gap: 10px; }
+  .person .basically { font-size: 1.08em; line-height: 1.4; padding: 14px 16px; border-left: 3px solid var(--page-ink); background: var(--wash); border-radius: 0 4px 4px 0; }
+  .sorts { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: -6px 0 14px; }
+  .sorts .lbl { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; color: var(--muted); margin-right: 4px; }
+  .person h1 { font-size: 2.1em; font-weight: 500; line-height: 1.05; margin: 22px 0 6px; text-wrap: balance; }
+  .person .meta { display: flex; flex-wrap: wrap; gap: 6px 14px; font-family: var(--mono); font-size: 12px; letter-spacing: .04em; opacity: .75; margin-bottom: 18px; }
+  .person .hit { font-size: 1.35em; font-weight: 500; line-height: 1.25; max-width: 26em; text-wrap: balance; margin-bottom: 22px; }
+  .person section { margin-top: 26px; max-width: 36em; }
+  .person section h2 { font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: .08em; opacity: .7; margin: 0 0 10px; }
+  .person .story { display: flex; flex-direction: column; gap: 10px; }
+  .person .said { display: flex; flex-direction: column; gap: 14px; }
+  .person .said blockquote { margin: 0; font-size: 1.15em; line-height: 1.3; font-style: italic; }
+  .person .said .wh { font-family: var(--mono); font-size: 12px; opacity: .7; line-height: 1.5; margin-top: 4px; }
+  .person .mess { padding: 14px 16px; border: 1.5px solid var(--page-ink); border-radius: 4px; display: flex; flex-direction: column; gap: 10px; }
+  .person .start { font-family: var(--mono); font-size: 13px; line-height: 1.6; opacity: .85; }
+  .person .ran { display: flex; flex-direction: column; gap: 8px; }
+  .person .ran button { display: flex; flex-direction: column; gap: 2px; align-items: flex-start; padding: 8px 0; border-top: 1px solid var(--page-ink); opacity: .9; width: 100%; }
+  .person .ran button:first-child { border-top: 0; }
+  .person .ran .y { font-family: var(--mono); font-size: 12px; line-height: 1.5; opacity: .7; }
+  .person .ran .t { font-size: 1em; }
+  .person .ran button:hover { opacity: 1; background: var(--wash); }
+  .person .others { display: flex; flex-wrap: wrap; gap: 6px; }
+  .person .others .chip { color: var(--page-ink); }
+  .person .others .chip:hover { background: var(--wash); }
+  .person .nextprev { display: flex; justify-content: space-between; gap: 12px; margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--page-ink); font-family: var(--mono); font-size: 13px; }
+  .person .nextprev button:hover { text-decoration: underline; }
+
+  /* term doors */
+  .tm { display: inline; text-decoration: underline dotted; text-underline-offset: 3px; text-decoration-thickness: 1.5px; border-radius: 2px; padding-inline: 1px; text-align: inherit; }
+  .tm:hover { background: var(--wash); }
+  .sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 31; background: var(--sheet); color: var(--ink); border-radius: 14px 14px 0 0; box-shadow: var(--shadow); padding: 18px 20px; padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px)); max-width: 640px; margin: 0 auto; max-height: 76vh; overflow: auto; }
+  .sheet .grip { width: 36px; height: 4px; border-radius: 2px; background: var(--rule); margin: 0 auto 14px; }
+  .sheet h3 { font-family: var(--serif); font-weight: 500; font-size: 1.5em; margin: 0 0 2px; line-height: 1.15; }
+  .sheet .kind { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; color: var(--muted); margin-bottom: 12px; }
+  .sheet p { margin: 0 0 10px; max-width: 34em; }
+  .sheet .close { position: absolute; top: 12px; right: 14px; font-family: var(--mono); font-size: 13px; color: var(--muted); padding: 6px 8px; }
+  .sheet .links, .person .learn, .sheet .inforest { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule); align-items: center; }
+  .sheet .links .lbl, .sheet .inforest .lbl { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; color: var(--muted); margin-right: 4px; }
+  .lnk { font-family: var(--mono); font-size: 12px; text-decoration: none; border: 1.5px solid currentColor; border-radius: 999px; padding: 4px 10px; line-height: 1.2; color: inherit; }
+  .lnk::after { content: " \2197"; opacity: .7; }
+  .lnk:hover { background: var(--wash); }
+  .sheet .why { display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); margin: 4px 0 8px; width: 100%; }
+  .sheet .inforest .chip { color: var(--page-ink); }
+  .backdrop2 { position: fixed; inset: 0; background: rgba(20,15,12,.25); z-index: 30; }
+  /* words (glossary) tab */
+  .words { list-style: none; margin: 0; padding: 0; columns: 1; }
+  @media (min-width: 720px) { .words { columns: 2; column-gap: 32px; } }
+  .words li { break-inside: avoid; border-top: 1px solid var(--rule); }
+  .words button { width: 100%; text-align: left; padding: 9px 2px; display: flex; gap: 10px; align-items: baseline; }
+  .words button:hover { background: var(--paper-2); }
+  .words .k { font-family: var(--mono); font-size: 11px; color: var(--muted); white-space: nowrap; min-width: 4.5em; }
+  .words .n { font-size: 15px; }
+  .letters { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 12px; }
+  .letters button { font-family: var(--mono); font-size: 12px; padding: 4px 7px; border-radius: 4px; color: var(--muted); }
+  .letters button:hover, .letters button[aria-current="true"] { background: var(--ink); color: var(--paper); }
+  /* the forest */
+  .forestwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 6px -16px 0; padding: 0 16px 8px; }
+  .forestwrap svg { display: block; min-width: 1400px; width: 100%; height: auto; }
+  @media (min-width: 1100px) { .forestwrap svg { min-width: 0; } }
+  .tree { cursor: pointer; }
+  .tree text { font-family: var(--mono); font-size: 11px; fill: var(--ink); stroke: var(--paper); stroke-width: 3px; paint-order: stroke fill; pointer-events: none; }
+  .tree text.yr { font-size: 9px; fill: var(--muted); }
+  .tree:hover .canopy, .tree.on .canopy { stroke-width: 4; }
+  .tree.dim { opacity: .35; }
+  .path { fill: none; stroke: var(--ink); stroke-width: 1.5; opacity: .12; stroke-dasharray: 3 7; pointer-events: none; }
+  .path.on { opacity: .8; stroke-width: 2.5; }
+  .grove-lbl { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; fill: var(--muted); stroke: none; }
+  .forest-hint { font-family: var(--mono); font-size: 12px; color: var(--muted); margin: 8px 2px 0; }
+  .years text { font-family: var(--mono); font-size: 10px; fill: var(--muted); }
+  .years line { stroke: var(--rule); }
+
+  /* pending tray */
+  .tray { margin: 22px 0 6px; padding: 14px 16px; border: 1.5px dashed var(--muted); border-radius: 4px; }
+  .tray h2 { font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: .08em; color: var(--muted); margin: 0 0 8px; }
+  .tray .item { display: flex; flex-direction: column; gap: 6px; padding: 10px 0; border-top: 1px solid var(--rule); }
+  .tray .item:first-of-type { border-top: 0; }
+  .tray .nm { font-weight: 500; }
+  .tray .flag { font-size: .95em; color: var(--muted); max-width: 40em; }
+  .tray .acts { display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+  .tray .acts button { font-family: var(--mono); font-size: 12px; border: 1.5px solid var(--ink); border-radius: 999px; padding: 5px 12px; }
+  .tray .acts button.in { background: var(--ink); color: var(--paper); }
+  .tray .acts button:disabled { opacity: .5; cursor: default; }
+  .tray .peek { font-family: var(--mono); font-size: 12px; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+
+  /* states */
+  .empty { margin-top: 48px; max-width: 30em; color: var(--muted); }
+  .empty b { color: var(--ink); font-weight: 500; }
+  .count { font-family: var(--mono); font-size: 12px; color: var(--muted); margin: 0 0 10px; }
+  .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: 13px; padding: 10px 14px; border-radius: 999px; z-index: 30; max-width: calc(100% - 32px); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .view { animation: fade .3s ease-out both; }
+    .person { animation: rise .25s ease-out both; }
+    @keyframes fade { from { opacity: .4; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    @keyframes rise { from { opacity: .6; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  }
+  .pthreads { display: flex; flex-wrap: wrap; gap: 6px; margin: -6px 0 14px; } .pthreads .chip { font-size: 12px; }
+  .filters.threads { flex-wrap: wrap; } .filters.threads .chip .n { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-left: 6px; }
+  .tnote { font-family: var(--serif); font-size: 17px; line-height: 1.45; margin: 4px 0 10px; max-width: 60ch; }
+  @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="bar">
+    <div class="brand"><svg class="owl" viewBox="0 0 24 28" width="14" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="15" rx="8" ry="9"/><path d="M6 8 L4 2 L9 6 M18 8 L20 2 L15 6"/><circle cx="8.5" cy="12" r="3"/><circle cx="15.5" cy="12" r="3"/><circle cx="8.5" cy="12" r="1" fill="currentColor"/><circle cx="15.5" cy="12" r="1" fill="currentColor"/></svg><b>the whole forest</b><span> &nbsp;·&nbsp; everybody, all at once</span></div>
+    <nav class="nav" aria-label="views">
+      <button id="nav-forest" data-view="forest">forest</button>
+      <button id="nav-people" data-view="people">people</button>
+      <button id="nav-crossings" data-view="crossings">crossings</button>
+      <button id="nav-words" data-view="words">words</button>
+      <button id="nav-threads" data-view="threads">threads</button>
+      <button id="wander" title="open somebody at random">wander</button>
+      <a href="index.html" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div id="tray" hidden></div>
+    <p class="intro" id="intro"><b>no dogma, no limits, no grading the trees.</b> the people the morning spreads keep quoting: what they said, where they struggled, what they got wrong, what they did the morning after, and every time two of them ran into each other. tap anybody.</p>
+    <div id="view"></div>
+    <div class="empty" id="empty" hidden>
+      <p><b>the forest's empty.</b></p>
+      <p>people land here from the 5am task, one at a time, after you've said yes to them. the owl's already up.</p>
+    </div>
+  </main>
+</div>
+
+<div id="backdrop" class="backdrop" hidden></div>
+<div id="backdrop2" class="backdrop2" hidden></div>
+<div id="sheet" class="sheet" role="dialog" aria-modal="true" hidden></div>
+<div id="person" class="person" role="dialog" aria-modal="true" hidden></div>
+
+<script src="data/forest.js"></script>
+<script>
+(function () {
+  const LC = { christian: 'peach', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
+  const LNAME = { christian: 'bible, and the christians', buddhist: 'the buddhists', hindu: 'the hindus', tao: 'the tao', native: 'turtle island', other: 'the rest of us' };
+  const THREADS = ['psychedelics', 'addiction', 'grief', 'doubt', 'anger', 'nonviolence', 'dying', 'the body', 'money', 'exile', 'prison', 'war', 'family', 'loneliness', 'joy', 'silence', 'work', 'forgiveness', 'madness', 'wandering', 'love', 'the land', 'fame'];
+  const TNOTE = { psychedelics: 'the mushroom, the acid, the cactus. what it did for people and what it cost them. nobody here is telling you to take anything.', addiction: 'drink, drugs, the thing you cannot put down.', grief: 'somebody died and they had to keep going.', doubt: 'the years where none of it felt true.', anger: 'the ones who had a temper, or were right to be furious.', nonviolence: 'the ones who would not hit back, and what it cost.', dying: 'how they faced it, their own or somebody else\'s.', 'the body': 'sickness, pain, hunger, sex, the animal you live in.', money: 'having it, giving it away, being broke.', exile: 'thrown out, run off, far from home.', prison: 'locked up, and what they made of it.', war: 'soldiers, survivors, the ones who refused.', family: 'parents, kids, marriages, the people you cannot pick.', loneliness: 'alone, sometimes on purpose.', joy: 'the ones who were, somehow, happy.', silence: 'the ones who shut up and listened.', work: 'the daily grind as the practice.', forgiveness: 'letting it go, or trying to.', madness: 'breakdowns, panic, visions the doctors had another word for.', wandering: 'the road, the pilgrimage, the not staying put.', love: 'the ones who loved somebody, or everybody.', 'the land': 'the ground under them and what it meant.', fame: 'being known, and what it does to a person.' };
+  const $ = (id) => document.getElementById(id);
+  const viewEl = $('view'), emptyEl = $('empty'), trayEl = $('tray'), personEl = $('person'), backdrop = $('backdrop');
+  let people = {}, meetings = {}, terms = {};   // key -> doc
+  let termRe = null, aliasKey = {};           // alias matcher
+  let letter = null;
+  let view = 'forest', filter = null, q = '', sort = 'name', wq = '', thread = null;
+  try { sort = localStorage.getItem('wf.sort') || 'name'; } catch (e) {}
+  const SORTS = [['name', 'a to z'], ['old', 'oldest first'], ['new', 'newest first'], ['lineage', 'by lineage'], ['mess', 'messiest first'], ['shuffle', 'shuffle']];
+  let loaded = false, canEdit = false, db = null;
+  let openKey = null;                        // person currently open
+
+  // --- helpers
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const color = (p) => p && (LC[p.lineage] || 'lavender');
+  const approved = (o) => Object.values(o).filter((d) => !d.status || d.status === 'approved');
+  const pending = (o) => Object.values(o).filter((d) => d.status === 'pending');
+  const yearOf = (d) => (typeof d.year === 'number' ? d.year : 0);
+  function safeSvg(svg) {
+    if (!svg || typeof svg !== 'string') return '';
+    try {
+      const doc = new DOMParser().parseFromString(svg, 'image/svg+xml');
+      const root = doc.documentElement;
+      if (!root || root.nodeName.toLowerCase() !== 'svg') return '';
+      root.querySelectorAll('script, foreignObject, iframe, object, embed, image').forEach((n) => n.remove());
+      root.querySelectorAll('*').forEach((el) => {
+        [...el.attributes].forEach((a) => {
+          const n = a.name.toLowerCase(), v = a.value;
+          const badUrl = /url\(/i.test(v) && !/^url\(#[\w-]+\)$/i.test(v.trim());
+          if (n.startsWith('on') || n === 'href' || n === 'xlink:href' || badUrl || /javascript:/i.test(v)) el.removeAttribute(a.name);
+        });
+      });
+      root.setAttribute('role', 'img');
+      return new XMLSerializer().serializeToString(root);
+    } catch (e) { return ''; }
+  }
+  // build the alias matcher from the glossary
+  function buildTermRe() {
+    const pairs = [];
+    Object.values(terms).forEach((t) => { if (!t.status || t.status === 'approved') (t.aliases || []).forEach((a) => { a = String(a).toLowerCase().trim(); if (a.length >= 3) { pairs.push(a); aliasKey[a] = t.key; } }); });
+    pairs.sort((a, b) => b.length - a.length);
+    if (!pairs.length) { termRe = null; return; }
+    const escRe = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    termRe = new RegExp('(^|[^a-z0-9\u00c0-\u024f])(' + pairs.map(escRe).join('|') + ')(?![a-z0-9\u00c0-\u024f])', 'gi');
+  }
+  // plain text -> escaped html with term doors (first hit per term per call)
+  function doors(raw, used) {
+    if (!termRe) return esc(raw);
+    let out = '', last = 0; termRe.lastIndex = 0; let m;
+    while ((m = termRe.exec(raw))) {
+      const alias = m[2], key = aliasKey[alias.toLowerCase()];
+      const start = m.index + m[1].length;
+      if (!key || used.has(key) || (openKey && key === openKey)) continue;
+      used.add(key);
+      out += esc(raw.slice(last, start)) + `<button class="tm" data-term="${esc(key)}">${esc(alias)}</button>`;
+      last = start + alias.length;
+    }
+    return out + esc(raw.slice(last));
+  }
+  // [[key|shown]] or [[key]] -> link to a person; everything else gets doors
+  function markup(text) {
+    const used = new Set();
+    return String(text || '').split(/\n+/).map((l) => l.trim()).filter(Boolean).map((line) => {
+      const parts = line.split(/(\[\[[^\]]+\]\])/);
+      const html = parts.map((seg) => {
+        const mm = /^\[\[([^\]|]+)(?:\|([^\]]+))?\]\]$/.exec(seg);
+        if (mm) { const key = mm[1].trim(); const label = (mm[2] || (people[key] && people[key].name) || key).trim(); return people[key] ? `<button class="pl" data-person="${esc(key)}">${esc(label)}</button>` : esc(label); }
+        return doors(seg, used);
+      }).join('');
+      return `<p>${html}</p>`;
+    }).join('');
+  }
+  function wireLinks(root) {
+    root.querySelectorAll('[data-term]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); openTerm(b.dataset.term); }));
+    root.querySelectorAll('[data-person]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); openPerson(b.dataset.person); }));
+    root.querySelectorAll('[data-thread]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); closeSheet(); closePerson(); thread = b.dataset.thread; setView('threads'); }));
+    root.querySelectorAll('[data-meeting]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); closePerson(); setView('crossings', b.dataset.meeting); }));
+  }
+  function meetingsFor(key) {
+    return approved(meetings).filter((m) => Array.isArray(m.who) && m.who.includes(key)).sort((a, b) => yearOf(a) - yearOf(b));
+  }
+  function whoChip(k) {
+    const p = people[k]; if (!p) return '';
+    return `<button class="chip ${color(p)}" data-person="${esc(k)}">${esc(p.name)}</button>`;
+  }
+  let toastT = null;
+  function toast(msg) {
+    let t = document.querySelector('.toast'); if (!t) { t = document.createElement('div'); t.className = 'toast'; document.body.appendChild(t); }
+    t.textContent = msg; clearTimeout(toastT); toastT = setTimeout(() => t.remove(), 2600);
+  }
+
+  // --- views
+  function setView(v, focus) {
+    view = v; render();
+    document.querySelectorAll('.nav [data-view]').forEach((b) => b.setAttribute('aria-current', b.dataset.view === v ? 'true' : 'false'));
+    try { history.replaceState(null, '', '#' + (focus ? 'x-' + focus : v)); } catch (e) {}
+    if (focus) { const el = viewEl.querySelector(`[data-x="${CSS.escape(focus)}"]`); if (el) { el.classList.add('open'); el.querySelector('.body').hidden = false; el.scrollIntoView({ block: 'start', behavior: 'smooth' }); } }
+    else window.scrollTo({ top: 0 });
+  }
+  function render() {
+    renderTray();
+    const list = approved(people);
+    emptyEl.hidden = !(loaded && !list.length);
+    $('intro').hidden = loaded && !list.length;
+    viewEl.innerHTML = view === 'crossings' ? crossingsHtml() : view === 'words' ? wordsHtml() : view === 'forest' ? forestHtml(list) : view === 'threads' ? threadsHtml(list) : peopleHtml(list);
+    viewEl.className = 'view';
+    wireLinks(viewEl);
+    if (view === 'people') {
+      viewEl.querySelectorAll('.card').forEach((c) => c.addEventListener('click', () => openPerson(c.dataset.person)));
+      viewEl.querySelectorAll('.filters .chip').forEach((c) => c.addEventListener('click', () => { filter = filter === c.dataset.l ? null : c.dataset.l; render(); }));
+      viewEl.querySelectorAll('.sorts .chip').forEach((c) => c.addEventListener('click', () => { if (c.dataset.s === 'shuffle') shuffleSeed = Math.random(); sort = c.dataset.s; try { localStorage.setItem('wf.sort', sort); } catch (e) {} render(); }));
+      const s = viewEl.querySelector('.search'); if (s) { s.addEventListener('input', () => { q = s.value.trim().toLowerCase(); const grid = viewEl.querySelector('.grid'); grid.innerHTML = cardsHtml(list); wireCards(grid); viewEl.querySelector('.count').textContent = countText(list); }); }
+    } else if (view === 'words') {
+      viewEl.querySelectorAll('.words [data-term]').forEach((b) => b.addEventListener('click', () => openTerm(b.dataset.term)));
+      viewEl.querySelectorAll('.letters button').forEach((b) => b.addEventListener('click', () => { letter = letter === b.dataset.l ? null : b.dataset.l; render(); }));
+      const s = viewEl.querySelector('.search'); if (s) s.addEventListener('input', () => { wq = s.value.trim().toLowerCase(); const ul = viewEl.querySelector('.words'); ul.innerHTML = wordItems(); viewEl.querySelector('.count').textContent = wordCount(); ul.querySelectorAll('[data-term]').forEach((b) => b.addEventListener('click', () => openTerm(b.dataset.term))); });
+    } else if (view === 'forest') {
+      wireForest();
+    } else if (view === 'threads') {
+      viewEl.querySelectorAll('.threads .chip').forEach((c) => c.addEventListener('click', () => { thread = thread === c.dataset.t ? null : c.dataset.t; render(); try { history.replaceState(null, '', '#' + (thread ? 't-' + thread : 'threads')); } catch (e) {} }));
+      wireCards(viewEl);
+    } else {
+      viewEl.querySelectorAll('.x').forEach((x) => {
+        const tog = () => { const open = x.classList.toggle('open'); x.querySelector('.body').hidden = !open; };
+        x.querySelector('.ttl button').addEventListener('click', tog);
+        x.querySelector('.more').addEventListener('click', tog);
+      });
+    }
+  }
+  function wireCards(grid) { grid.querySelectorAll('.card').forEach((c) => c.addEventListener('click', () => openPerson(c.dataset.person))); }
+  let shuffleSeed = Math.random();
+  function born(p) { return typeof p.born === 'number' ? p.born : (typeof p.year === 'number' ? p.year : 0); }
+  function messiness(p) { const m = String(p.mess || ''); return /^nothing (i know of|gross)/.test(m.trim()) ? 0 : m.length; }
+  function visible(list) {
+    const out = list.filter((p) => (!filter || p.lineage === filter) && (!q || (p.name + ' ' + (p.hit || '') + ' ' + (p.basically || '') + ' ' + (p.place || '') + ' ' + (p.lineage || '') + ' ' + (Array.isArray(p.threads) ? p.threads.join(' ') : '')).toLowerCase().includes(q)));
+    const byName = (a, b) => a.name.localeCompare(b.name);
+    if (sort === 'old') out.sort((a, b) => born(a) - born(b) || byName(a, b));
+    else if (sort === 'new') out.sort((a, b) => born(b) - born(a) || byName(a, b));
+    else if (sort === 'lineage') { const order = Object.keys(LC); out.sort((a, b) => order.indexOf(a.lineage) - order.indexOf(b.lineage) || born(a) - born(b)); }
+    else if (sort === 'mess') out.sort((a, b) => messiness(b) - messiness(a) || byName(a, b));
+    else if (sort === 'shuffle') { const h = (s) => { let x = 0; for (const c of s + shuffleSeed) x = (x * 31 + c.charCodeAt(0)) >>> 0; return x; }; out.sort((a, b) => h(a.key) - h(b.key)); }
+    else out.sort(byName);
+    return out;
+  }
+  function countText(list) { const v = visible(list).length; return v === list.length ? `${list.length} people so far` : `${v} of ${list.length}`; }
+  function cardsHtml(list) {
+    return visible(list).map((p) => `<button class="card ${color(p)}" data-person="${esc(p.key)}">
+      <div class="pic">${safeSvg(p.doodle && p.doodle.svg)}${p.portrait ? `<div class="face">${safeSvg(p.portrait)}</div>` : ''}</div>
+      <div class="txt"><span class="lineage-lbl">${esc(p.lineage)}</span><span class="nm">${esc(p.name)}</span><span class="yr">${esc(p.years || '')}</span><span class="hit">${esc(p.hit || '')}</span></div>
+    </button>`).join('') || `<p class="empty" style="margin-top:8px">nobody matches that. try fewer letters.</p>`;
+  }
+  function peopleHtml(list) {
+    if (!list.length) return '';
+    const chips = Object.keys(LC).map((l) => `<button class="chip" data-l="${l}" aria-pressed="${filter === l}"><span class="dot ${LC[l]}"></span>${LNAME[l]}</button>`).join('');
+    const sorts = `<div class="sorts"><span class="lbl">sort</span>${SORTS.map(([k, l]) => `<button class="chip" data-s="${k}" aria-pressed="${sort === k}">${l}</button>`).join('')}</div>`;
+    return `<div class="filters">${chips}<input class="search" type="search" id="search" placeholder="find" value="${esc(q)}" aria-label="find a person"></div>${sorts}
+      <p class="count">${countText(list)}</p><div class="grid">${cardsHtml(list)}</div>`;
+  }
+  function crossingsHtml() {
+    const list = approved(meetings).sort((a, b) => yearOf(a) - yearOf(b));
+    if (!list.length) return `<p class="empty" style="margin-top:24px">no crossings yet. they show up as people do.</p>`;
+    return `<p class="count">${list.length} times they ran into each other, oldest first</p><div class="spine">` + list.map((m) => {
+      const cols = (m.who || []).map((k) => people[k]).filter(Boolean).map(color);
+      const grad = cols.length > 1 ? `linear-gradient(135deg, ${cols.map((c) => `var(--${c})`).join(', ')})` : (cols[0] ? `var(--${cols[0]})` : 'var(--paper-2)');
+      return `<article class="x" data-x="${esc(m.key)}" style="--x-color:${grad}">
+        <div class="when">${esc(m.when || '')}</div>
+        <div class="ttl"><button aria-expanded="false">${esc(m.title)}</button></div>
+        <div class="who">${(m.who || []).map(whoChip).join('')}</div>
+        <div class="body" hidden>${markup(m.lines)}${m.also && m.also.length ? `<div class="also">also in the room: ${esc(m.also.join(', '))}</div>` : ''}${m.where ? `<div class="where">${esc(m.where)}</div>` : ''}</div>
+        <button class="more">read it</button>
+      </article>`;
+    }).join('') + '</div>';
+  }
+
+  // --- person page
+  function openPerson(key) {
+    const p = people[key]; if (!p) return;
+    closeSheet();
+    openKey = key;
+    const c = color(p);
+    const ran = meetingsFor(key);
+    const others = [...new Set(ran.flatMap((m) => m.who || []))].filter((k) => k !== key && people[k]);
+    const order = approved(people).sort((a, b) => a.name.localeCompare(b.name)).map((x) => x.key);
+    const i = order.indexOf(key); const prev = order[(i - 1 + order.length) % order.length], next = order[(i + 1) % order.length];
+    personEl.className = `person ${c}`;
+    personEl.innerHTML = `<div class="inner">
+      <div class="top"><button id="pclose">&larr; back</button><span class="lineage-lbl">${esc(p.lineage)}</span></div>
+      <div class="pic">${safeSvg(p.doodle && p.doodle.svg)}</div>
+      ${p.doodle && p.doodle.note ? `<p class="picnote">${esc(p.doodle.note)}</p>` : ''}
+      <div class="head">${p.portrait ? `<div class="face">${safeSvg(p.portrait)}</div>` : ''}<h1>${esc(p.name)}</h1></div>
+      <div class="meta">${p.years ? `<span>${esc(p.years)}</span>` : ''}${p.place ? `<span>${esc(p.place)}</span>` : ''}</div>
+      <p class="hit">${esc(p.hit || '')}</p>
+      ${Array.isArray(p.threads) && p.threads.length ? `<div class="pthreads">${p.threads.filter((t) => THREADS.includes(t)).map((t) => `<button class="chip" data-thread="${esc(t)}">${esc(t)}</button>`).join('')}</div>` : ''}
+      ${p.basically ? `<section><h2>so basically</h2><div class="basically">${markup(p.basically)}</div></section>` : ''}
+      <section><h2>the story</h2><div class="story">${markup(p.story)}</div></section>
+      ${Array.isArray(p.moments) && p.moments.length ? `<section><h2>a few more things</h2><div class="moments">${p.moments.map((m) => markup(m)).join('')}</div></section>` : ''}
+      ${p.struggle ? `<section><h2>the struggle</h2><div class="struggle">${markup(p.struggle)}</div></section>` : ''}
+      ${Array.isArray(p.said) && p.said.length ? `<section><h2>things they said</h2><div class="said">${p.said.map((s) => `<div><blockquote>${esc(s.q)}</blockquote>${s.where ? `<div class="wh">${esc(s.where)}</div>` : ''}</div>`).join('')}</div></section>` : ''}
+      ${p.mess ? `<section><h2>the mess</h2><div class="mess">${markup(p.mess)}</div></section>` : ''}
+      ${p.after ? `<section><h2>what they did next</h2><div class="after">${markup(p.after)}</div></section>` : ''}
+      ${p.start ? `<section><h2>start here</h2><p class="start">${esc(p.start)}</p></section>` : ''}
+      ${Array.isArray(p.learn) && p.learn.length ? `<section><h2>learn more</h2><div class="learn">${p.learn.filter((l) => l && /^https:\/\//.test(l.url)).map((l) => `<a class="lnk" href="${esc(l.url)}" target="_blank" rel="noopener" title="${esc(l.why || '')}">${esc(l.label || 'link')}</a>`).join('')}</div></section>` : ''}
+      ${ran.length ? `<section><h2>ran into</h2><div class="ran">${ran.map((m) => `<button data-meeting="${esc(m.key)}"><span class="y">${esc(m.when || '')}</span><span class="t">${esc(m.title)}</span></button>`).join('')}</div></section>` : ''}
+      ${others.length ? `<section><h2>and through them</h2><div class="others">${others.map(whoChip).join('')}</div></section>` : ''}
+      <div class="nextprev"><button data-person="${esc(prev)}">&larr; ${esc(people[prev].name)}</button><button data-person="${esc(next)}">${esc(people[next].name)} &rarr;</button></div>
+    </div>`;
+    personEl.hidden = false; backdrop.hidden = false;
+    personEl.scrollTop = 0;
+    $('pclose').addEventListener('click', closePerson);
+    wireLinks(personEl);
+    try { history.replaceState(null, '', '#' + key); } catch (e) {}
+    document.body.style.overflow = 'hidden';
+  }
+  function closePerson() {
+    if (personEl.hidden) return;
+    personEl.hidden = true; backdrop.hidden = true; personEl.innerHTML = ''; openKey = null;
+    document.body.style.overflow = '';
+    try { history.replaceState(null, '', '#' + view); } catch (e) {}
+  }
+  backdrop.addEventListener('click', closePerson);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (!sheet.hidden) closeSheet(); else closePerson(); } });
+  $('wander').addEventListener('click', () => {
+    const list = approved(people).filter((p) => p.key !== openKey);
+    if (!list.length) return;
+    openPerson(list[Math.floor(Math.random() * list.length)].key);
+  });
+  document.querySelectorAll('.nav [data-view]').forEach((b) => b.addEventListener('click', () => { closePerson(); setView(b.dataset.view); }));
+
+  // --- term doors (the sheet)
+  const sheet = $('sheet'), backdrop2 = $('backdrop2');
+  function openSheet(html) {
+    sheet.innerHTML = `<div class="grip"></div><button class="close" id="sheetclose">close</button>${html}`;
+    sheet.hidden = false; backdrop2.hidden = false;
+    $('sheetclose').addEventListener('click', closeSheet);
+    wireLinks(sheet);
+    sheet.scrollTop = 0;
+  }
+  function closeSheet() { sheet.hidden = true; backdrop2.hidden = true; sheet.innerHTML = ''; }
+  backdrop2.addEventListener('click', closeSheet);
+  function openTerm(key) {
+    const t = terms[key]; if (!t) return;
+    const lines = String(t.lines || '').split(/\n+/).filter(Boolean).map((l) => `<p>${esc(l)}</p>`).join('');
+    const links = Array.isArray(t.links) ? t.links.filter((l) => l && /^https:\/\//.test(l.url)) : [];
+    const linkHtml = links.length ? `<div class="links"><span class="lbl">look it up</span>${links.map((l) => `<a class="lnk" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label || 'link')}</a>`).join('')}${links.some((l) => l.why) ? `<span class="why">${links.map((l) => l.why ? esc(l.label + ': ' + l.why) : '').filter(Boolean).join(' · ')}</span>` : ''}</div>` : '';
+    // who in the forest mentions this
+    const als = (t.aliases || []).map((a) => String(a).toLowerCase());
+    const re = new RegExp('(^|[^a-z0-9])(' + als.map((a) => a.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')(?![a-z0-9])', 'i');
+    const who = als.length ? approved(people).filter((p) => p.key !== openKey && re.test([p.basically, p.story, p.struggle, p.mess, p.after, (p.moments || []).join(' '), (p.said || []).map((s) => s.q + ' ' + s.where).join(' ')].join(' '))).sort((a, b) => a.name.localeCompare(b.name)) : [];
+    const whoHtml = who.length ? `<div class="inforest"><span class="lbl">in the forest</span>${who.slice(0, 12).map((p) => whoChip(p.key)).join('')}${who.length > 12 ? `<span class="lbl">and ${who.length - 12} more</span>` : ''}</div>` : '';
+    openSheet(`<h3>${esc(t.name || key)}</h3><div class="kind">${esc(t.kind || 'word')}</div>${lines}${linkHtml}${whoHtml}`);
+  }
+
+  // --- words (the glossary)
+  function wordList() {
+    return approved(terms).filter((t) => (!letter || (t.name || t.key).replace(/^(the|a|an) /, '')[0] === letter) && (!wq || ((t.name || '') + ' ' + (t.aliases || []).join(' ') + ' ' + (t.lines || '')).toLowerCase().includes(wq)))
+      .sort((a, b) => (a.name || a.key).replace(/^(the|a|an) /, '').localeCompare((b.name || b.key).replace(/^(the|a|an) /, '')));
+  }
+  function wordCount() { const n = wordList().length, all = approved(terms).length; return n === all ? `${all} words, books, places and people without a page` : `${n} of ${all}`; }
+  function wordItems() { return wordList().map((t) => `<li><button data-term="${esc(t.key)}"><span class="k">${esc(t.kind || 'word')}</span><span class="n">${esc(t.name || t.key)}</span></button></li>`).join('') || '<li><p class="empty" style="margin:8px 0">nothing matches that.</p></li>'; }
+  function wordsHtml() {
+    if (!approved(terms).length) return `<p class="empty" style="margin-top:24px">no words yet. the doors are being built.</p>`;
+    const letters = 'abcdefghijklmnopqrstuvwxyz'.split('').map((l) => `<button data-l="${l}" aria-current="${letter === l}">${l}</button>`).join('');
+    return `<div class="filters"><span class="lbl" style="font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted)">tap any dotted word on any page, or browse</span><input class="search" type="search" id="wsearch" placeholder="find a word" value="${esc(wq)}" aria-label="find a word"></div>
+      <div class="letters">${letters}</div><p class="count">${wordCount()}</p><ul class="words">${wordItems()}</ul>`;
+  }
+
+  // --- threads (what are you feeling)
+  function threadsHtml(list) {
+    if (!list.length) return '';
+    const cnt = {}; list.forEach((p) => (p.threads || []).forEach((t) => cnt[t] = (cnt[t] || 0) + 1));
+    const tcnt = {}; approved(terms).forEach((t) => (t.threads || []).forEach((x) => tcnt[x] = (tcnt[x] || 0) + 1));
+    const chips = THREADS.filter((t) => cnt[t] || tcnt[t]).map((t) => `<button class="chip" data-t="${esc(t)}" aria-pressed="${thread === t}">${esc(t)}<span class="n">${cnt[t] || 0}</span></button>`).join('');
+    let body = '';
+    if (thread) {
+      const ps = list.filter((p) => (p.threads || []).includes(thread)).sort((a, b) => born(a) - born(b) || a.name.localeCompare(b.name));
+      const ts = approved(terms).filter((t) => (t.threads || []).includes(thread)).sort((a, b) => (a.name || a.key).localeCompare(b.name || b.key));
+      body = `<p class="tnote">${esc(TNOTE[thread] || '')}</p><p class="count">${ps.length} ${ps.length === 1 ? 'person' : 'people'}, oldest first</p><div class="grid">${ps.map((p) => `<button class="card ${color(p)}" data-person="${esc(p.key)}">
+      <div class="pic">${safeSvg(p.doodle && p.doodle.svg)}${p.portrait ? `<div class="face">${safeSvg(p.portrait)}</div>` : ''}</div>
+      <div class="txt"><span class="lineage-lbl">${esc(p.lineage)}</span><span class="nm">${esc(p.name)}</span><span class="yr">${esc(p.years || '')}</span><span class="hit">${esc(p.hit || '')}</span></div>
+    </button>`).join('') || '<p class="empty" style="margin-top:8px">nobody yet.</p>'}</div>` +
+        (ts.length ? `<p class="count" style="margin-top:22px">${ts.length} doors</p><ul class="words">${ts.map((t) => `<li><button data-term="${esc(t.key)}"><span class="k">${esc(t.kind || 'word')}</span><span class="n">${esc(t.name || t.key)}</span></button></li>`).join('')}</ul>` : '');
+    } else body = `<p class="tnote">pick the thing you're carrying. every person here got tagged with the one to five things their page is actually about.</p>`;
+    return `<div class="filters threads">${chips}</div>${body}`;
+  }
+
+  // --- the forest itself
+  const GROVES = ['christian', 'buddhist', 'hindu', 'tao', 'native', 'other'];
+  function xOfYear(y) { // piecewise: old years squeezed, modern years stretched
+    const segs = [[-1400, 0, 60, 260], [0, 1500, 260, 620], [1500, 1900, 620, 1000], [1900, 2030, 1000, 1370]];
+    for (const [a, b, xa, xb] of segs) if (y >= a && y <= b) return xa + (y - a) / (b - a) * (xb - xa);
+    return y < -1400 ? 60 : 1370;
+  }
+  function treeSvg(p, x, y, size, i) {
+    const c = `var(--${color(p)})`, k = esc(p.key);
+    const h = size, w = size * 0.9;
+    let body = '';
+    if (p.lineage === 'christian') body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.45}'/><ellipse class='canopy' cx='${x}' cy='${y - h * 0.62}' rx='${w / 2}' ry='${h * 0.36}' fill='${c}'/>`;
+    else if (p.lineage === 'buddhist') body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.3}'/><path class='canopy' d='M ${x - w / 2} ${y - h * 0.3} L ${x} ${y - h * 0.62} L ${x + w / 2} ${y - h * 0.3} Z M ${x - w * 0.38} ${y - h * 0.55} L ${x} ${y - h * 0.85} L ${x + w * 0.38} ${y - h * 0.55} Z M ${x - w * 0.26} ${y - h * 0.78} L ${x} ${y - h} L ${x + w * 0.26} ${y - h * 0.78} Z' fill='${c}'/>`;
+    else if (p.lineage === 'hindu') body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.5}'/><path d='M ${x - w * 0.3} ${y} L ${x - w * 0.25} ${y - h * 0.45} M ${x + w * 0.3} ${y} L ${x + w * 0.25} ${y - h * 0.45}' opacity='.6'/><path class='canopy' d='M ${x - w * 0.6} ${y - h * 0.5} C ${x - w * 0.6} ${y - h * 0.9} ${x + w * 0.6} ${y - h * 0.9} ${x + w * 0.6} ${y - h * 0.5} C ${x + w * 0.3} ${y - h * 0.42} ${x - w * 0.3} ${y - h * 0.42} ${x - w * 0.6} ${y - h * 0.5} Z' fill='${c}'/>`;
+    else if (p.lineage === 'tao') body = `<path d='M ${x} ${y} C ${x - 2} ${y - h * 0.4} ${x + 3} ${y - h * 0.6} ${x} ${y - h * 0.75}'/><path class='canopy' d='M ${x - w * 0.5} ${y - h * 0.55} C ${x - w * 0.5} ${y - h * 1.05} ${x + w * 0.5} ${y - h * 1.05} ${x + w * 0.5} ${y - h * 0.55} C ${x + w * 0.45} ${y - h * 0.25} ${x + w * 0.2} ${y - h * 0.1} ${x + w * 0.2} ${y - h * 0.35} C ${x} ${y - h * 0.05} ${x - w * 0.2} ${y - h * 0.15} ${x - w * 0.2} ${y - h * 0.35} C ${x - w * 0.3} ${y - h * 0.1} ${x - w * 0.5} ${y - h * 0.25} ${x - w * 0.5} ${y - h * 0.55} Z' fill='${c}'/>`;
+    else if (p.lineage === 'native') body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.4} M ${x} ${y - h * 0.4} L ${x - w * 0.22} ${y - h * 0.62} M ${x} ${y - h * 0.4} L ${x + w * 0.2} ${y - h * 0.6}'/><path class='canopy' d='M ${x - w * 0.55} ${y - h * 0.6} C ${x - w * 0.6} ${y - h * 0.85} ${x - w * 0.25} ${y - h * 1.02} ${x} ${y - h * 0.9} C ${x + w * 0.25} ${y - h * 1.04} ${x + w * 0.6} ${y - h * 0.85} ${x + w * 0.55} ${y - h * 0.6} C ${x + w * 0.5} ${y - h * 0.45} ${x + w * 0.2} ${y - h * 0.4} ${x} ${y - h * 0.48} C ${x - w * 0.2} ${y - h * 0.4} ${x - w * 0.5} ${y - h * 0.45} ${x - w * 0.55} ${y - h * 0.6} Z' fill='${c}'/>`;
+    else body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.55}'/><path d='M ${x - 3} ${y - h * 0.25} L ${x - 5} ${y - h * 0.22} M ${x + 3} ${y - h * 0.4} L ${x + 5} ${y - h * 0.37}' opacity='.5'/><ellipse class='canopy' cx='${x}' cy='${y - h * 0.72}' rx='${w * 0.32}' ry='${h * 0.3}' fill='${c}'/>`;
+    const label = p.name.length > 16 ? p.name.split(' ').slice(-1)[0] : p.name;
+    const yr = typeof p.born === 'number' ? (p.born < 0 ? Math.abs(p.born) + ' bc' : String(p.born)) : '';
+    const ly = y + 14 + (2 - i) * 9 + 6;
+    return `<g class='tree' data-person='${k}' tabindex='0' role='button' aria-label='${esc(p.name)}'>${body}<text x='${x}' y='${ly}' text-anchor='middle'>${esc(label)}</text><text class='yr' x='${x}' y='${ly + 10}' text-anchor='middle'>${esc(yr)}</text></g>`;
+  }
+  let treePos = {};
+  function forestHtml(list) {
+    if (!list.length) return '';
+    const W = 1400, bandH = 150, top = 20, left = 24, right = 40;
+    const bands = {}; GROVES.forEach((g, i) => bands[g] = top + i * bandH);
+    treePos = {};
+    GROVES.forEach((g) => {
+      const ps = list.filter((p) => p.lineage === g).sort((a, b) => born(a) - born(b) || a.name.localeCompare(b.name));
+      if (!ps.length) return;
+      // x by year, then push apart, then squeeze into the band if it overflows
+      const gap = 44; let xs = ps.map((p) => xOfYear(born(p)));
+      for (let i = 1; i < xs.length; i++) if (xs[i] - xs[i - 1] < gap) xs[i] = xs[i - 1] + gap;
+      const span = xs[xs.length - 1] - xs[0], avail = W - left - right - 80;
+      if (span > avail) { const x0 = xs[0]; xs = xs.map((x) => left + 40 + (x - x0) / span * avail); }
+      else if (xs[xs.length - 1] > W - right - 40) { const d = xs[xs.length - 1] - (W - right - 40); xs = xs.map((x) => x - d); }
+      ps.forEach((p, i) => {
+        const age = 2030 - born(p);
+        const size = Math.max(34, Math.min(66, 30 + Math.log(age + 10) * 5.2));
+        const row = i % 3;
+        treePos[p.key] = { x: xs[i], y: bands[g] + bandH - 40 - row * 9, size, row };
+      });
+    });
+    const paths = approved(meetings).filter((m) => (m.who || []).length >= 2).map((m) => {
+      const ks = m.who.filter((k) => treePos[k]); if (ks.length < 2) return '';
+      const a = treePos[ks[0]], b = treePos[ks[1]];
+      const mx = (a.x + b.x) / 2, my = Math.min(a.y, b.y) - 50;
+      return `<path class='path' data-a='${esc(ks[0])}' data-b='${esc(ks[1])}' d='M ${a.x} ${a.y - a.size * 0.6} Q ${mx} ${my} ${b.x} ${b.y - b.size * 0.6}'/>`;
+    }).join('');
+    const grounds = GROVES.map((g) => { const y = bands[g] + bandH - 40; return `<path d='M ${left} ${y} C 200 ${y - 5} 500 ${y + 5} 800 ${y} S 1300 ${y - 4} ${W - left} ${y}' stroke='var(--rule)' stroke-width='2'/><text class='grove-lbl' x='${left + 2}' y='${bands[g] + 24}'>${esc(LNAME[g])}</text>`; }).join('');
+    const trees = list.filter((p) => treePos[p.key]).sort((a, b) => treePos[a.key].y - treePos[b.key].y || treePos[a.key].x - treePos[b.key].x).map((p, i) => treeSvg(p, treePos[p.key].x, treePos[p.key].y, treePos[p.key].size, treePos[p.key].row)).join('');
+    const taoOld = list.filter((p) => p.lineage === 'tao').sort((a, b) => born(a) - born(b))[0];
+    const owl = taoOld && treePos[taoOld.key] ? (() => { const t = treePos[taoOld.key]; const sc = 0.9; return `<g transform='translate(${t.x + t.size * 0.22},${t.y - t.size * 0.5 - 27 * sc}) scale(${sc})' fill='none' stroke='var(--page-ink)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' opacity='.85'><ellipse cx='12' cy='15' rx='8' ry='9'/><path d='M6 8 L4 2 L9 6 M18 8 L20 2 L15 6'/><circle cx='8.5' cy='12' r='3'/><circle cx='15.5' cy='12' r='3'/><circle cx='8.5' cy='12' r='1' fill='var(--page-ink)'/><circle cx='15.5' cy='12' r='1' fill='var(--page-ink)'/><path d='M12 14 l -1.5 2.5 h 3 z' fill='var(--page-ink)'/><path d='M9 24 l -2 3 M15 24 l 2 3'/></g>`; })() : '';
+    const H = top + bandH * GROVES.length + 6;
+    return `<div class="forestwrap"><svg viewBox='0 0 ${W} ${H}' fill='none' stroke='var(--page-ink)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' role='img' aria-label='the whole forest'>${grounds}${paths}${trees}${owl}</svg></div>
+      <p class="forest-hint">six groves. in each one the oldest roots are on the left and the newest on the right, and the bigger the tree the older it is. the dotted paths are where two of them crossed. tap a tree.${list.length ? ` ${list.length} trees so far.` : ''}</p>`;
+  }
+  function wireForest() {
+    const svg = viewEl.querySelector('svg'); if (!svg) return;
+    const trees = [...svg.querySelectorAll('.tree')], paths = [...svg.querySelectorAll('.path')];
+    const lit = (k) => { trees.forEach((t) => { t.classList.toggle('dim', !!k && t.dataset.person !== k && !paths.some((p) => p.classList.contains('on') && (p.dataset.a === t.dataset.person || p.dataset.b === t.dataset.person))); }); };
+    trees.forEach((t) => {
+      const k = t.dataset.person;
+      const on = () => { paths.forEach((p) => p.classList.toggle('on', p.dataset.a === k || p.dataset.b === k)); trees.forEach((x) => x.classList.toggle('on', x.dataset.person === k)); lit(k); };
+      const off = () => { paths.forEach((p) => p.classList.remove('on')); trees.forEach((x) => { x.classList.remove('on'); x.classList.remove('dim'); }); };
+      t.addEventListener('mouseenter', on); t.addEventListener('mouseleave', off); t.addEventListener('focus', on); t.addEventListener('blur', off);
+      t.addEventListener('click', () => openPerson(k));
+      t.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPerson(k); } });
+    });
+    // on a phone, start scrolled to the modern end where most trees are
+    const wrap = viewEl.querySelector('.forestwrap'); if (wrap && wrap.scrollWidth > wrap.clientWidth) wrap.scrollLeft = wrap.scrollWidth;
+  }
+
+  // --- pending tray (owner only)
+  function renderTray() {
+    const pp = pending(people), pm = pending(meetings), pt = pending(terms);
+    if (!canEdit || (!pp.length && !pm.length && !pt.length)) { trayEl.hidden = true; trayEl.innerHTML = ''; return; }
+    trayEl.hidden = false; trayEl.className = 'tray';
+    trayEl.innerHTML = `<h2>waiting on you</h2>` + pp.map((p) => `<div class="item" data-kind="people" data-key="${esc(p.key)}">
+        <div class="nm">${esc(p.name)} <span class="lineage-lbl">${esc(p.lineage)}</span></div>
+        <div class="flag">${esc(p.hit || '')}</div>
+        ${p.mess ? `<div class="flag"><b>the mess:</b> ${esc(p.mess)}</div>` : ''}
+        <div class="acts"><button class="in">let them in</button><button class="out">not this one</button><button class="peek" data-preview="${esc(p.key)}">read the page first</button></div>
+      </div>`).join('') + pm.map((m) => `<div class="item" data-kind="meetings" data-key="${esc(m.key)}">
+        <div class="nm">${esc(m.title)} <span class="lineage-lbl">${esc(m.when || '')}</span></div>
+        <div class="flag">${esc(String(m.lines || '').split('\n')[0])}</div>
+        <div class="acts"><button class="in">add it</button><button class="out">skip it</button></div>
+      </div>`).join('') + pt.map((t) => `<div class="item" data-kind="terms" data-key="${esc(t.key)}">
+        <div class="nm">${esc(t.name || t.key)} <span class="lineage-lbl">${esc(t.kind || 'word')} · a new door</span></div>
+        <div class="flag">${esc(String(t.lines || '').split('\n')[0])}</div>
+        <div class="acts"><button class="in">add the door</button><button class="out">skip it</button><button class="peek" data-previewterm="${esc(t.key)}">read it first</button></div>
+      </div>`).join('');
+    trayEl.querySelectorAll('.item').forEach((it) => {
+      const kind = it.dataset.kind, key = it.dataset.key;
+      it.querySelector('.in').addEventListener('click', async () => decide(kind, key, true, it));
+      it.querySelector('.out').addEventListener('click', async () => decide(kind, key, false, it));
+      const pk = it.querySelector('[data-preview]'); if (pk) pk.addEventListener('click', () => openPerson(pk.dataset.preview));
+      const pt2 = it.querySelector('[data-previewterm]'); if (pt2) pt2.addEventListener('click', () => openTerm(pt2.dataset.previewterm));
+    });
+  }
+  async function decide(kind, key, yes, it) {
+    if (!db) return;
+    it.querySelectorAll('button').forEach((b) => b.disabled = true);
+    try {
+      const ref = db.doc(kind + '/' + key);
+      if (yes) await ref.update({ status: 'approved', approvedAt: new Date().toISOString() });
+      else await ref.delete();
+      toast(yes ? (kind === 'people' ? 'in the forest.' : kind === 'terms' ? 'door added.' : 'added.') : 'gone.');
+    } catch (e) {
+      it.querySelectorAll('button').forEach((b) => b.disabled = false);
+      toast(e && e.code === 'invalid_argument' ? "you can't change this from here." : 'that didn\'t save. try again.');
+    }
+  }
+
+  // --- data
+  function accept(kind, list) {
+    const o = {}; list.forEach((d) => { if (d && d.key) o[d.key] = d; });
+    if (kind === 'people') people = o; else if (kind === 'terms') { terms = o; buildTermRe(); } else meetings = o;
+    render();
+    if (openKey && people[openKey]) { /* keep the open page as is */ }
+  }
+  function boot() {
+    const h = (location.hash || '').slice(1);
+    if (h === 'crossings' || h.startsWith('x-')) { view = 'crossings'; } else if (h === 'people' || h === 'words' || h === 'threads') { view = h; } else if (h.startsWith('w-')) { view = 'words'; } else if (h.startsWith('t-')) { view = 'threads'; thread = decodeURIComponent(h.slice(2)); }
+    render();
+    document.querySelectorAll('.nav [data-view]').forEach((b) => b.setAttribute('aria-current', b.dataset.view === view ? 'true' : 'false'));
+    if (h.startsWith('x-')) setView('crossings', h.slice(2));
+    else if (h.startsWith('w-') && terms[h.slice(2)]) openTerm(h.slice(2));
+    else if (h && people[h]) openPerson(h);
+  }
+  let booted = false;
+  try {
+    const WF = window.WHOLE_FOREST || {}; const cp = WF.people, cm = WF.meetings, ct = WF.terms;
+    if (Array.isArray(ct) && ct.length) { ct.forEach((d) => { if (d && d.key) terms[d.key] = d; }); buildTermRe(); }
+    if (Array.isArray(cp) && cp.length) { cp.forEach((d) => { if (d && d.key) people[d.key] = d; }); }
+    if (Array.isArray(cm) && cm.length) { cm.forEach((d) => { if (d && d.key) meetings[d.key] = d; }); }
+  } catch (e) {}
+  boot(); booted = true;
+
+  (async () => {
+    const use = window.claude && window.claude.use ? (n) => window.claude.use(n) : () => Promise.resolve(null);
+    const [d, u] = await Promise.all([use('db'), use('user')]);
+    db = d;
+    try { canEdit = !!(u && (await u.canEdit())); } catch (e) { canEdit = false; }
+    if (!db) { loaded = true; render(); return; }
+    let first = true;
+    db.collection('people').limit(1000).onSnapshot((snap) => {
+      loaded = true;
+      accept('people', snap.docs.filter((x) => x.exists).map((x) => Object.assign({ key: x.id }, x.data())));
+      if (first) { first = false; const h = (location.hash || '').slice(1); if (h && people[h] && personEl.hidden) openPerson(h); }
+    }, (err) => { console.warn('people', err); loaded = true; render(); });
+    db.collection('meetings').limit(1000).onSnapshot((snap) => {
+      accept('meetings', snap.docs.filter((x) => x.exists).map((x) => Object.assign({ key: x.id }, x.data())));
+    }, (err) => { console.warn('meetings', err); });
+    // the glossary: shard docs ({items:[...]}) or single-term docs, either way
+    db.collection('terms').limit(1000).onSnapshot((snap) => {
+      const list = [];
+      snap.docs.filter((x) => x.exists).forEach((x) => { const d = x.data(); if (Array.isArray(d.items)) d.items.forEach((t) => { if (t && t.key) list.push(t); }); else list.push(Object.assign({ key: x.id }, d)); });
+      accept('terms', list);
+    });
+  })();
+})();
+</script>
+</body>
+</html>

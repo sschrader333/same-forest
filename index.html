@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="same forest: one two-page spread a day, two voices on one theme, and a question to sit with.">
+<meta name="robots" content="noindex">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<title>same forest</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --paper: #F4EFE6;
+    --paper-2: #ECE5D9;
+    --ink: #2A2420;
+    --muted: #7A6F66;
+    --rule: #D9D0C3;
+    --peach: #F3C9AA;
+    --blue: #BDD3E6;
+    --marigold: #F2D389;
+    --sage: #C5D6BD;
+    --lavender: #D8CCE6;
+    --clay: #D9A98C;
+    --page-ink: #2A2420;
+    --sheet: #FBF8F2;
+    --shadow: 0 -8px 30px rgba(42,36,32,.18);
+    --fold: rgba(42,36,32,.10);
+    --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #191614;
+      --paper-2: #211D1A;
+      --ink: #EDE6DC;
+      --muted: #A0958A;
+      --rule: #3A332E;
+      --peach: #4A3327;
+      --blue: #26384A;
+      --marigold: #4A3D1A;
+      --sage: #2C3D32;
+      --lavender: #3B3347; --clay: #4E2E24;
+      --page-ink: #EDE6DC;
+      --sheet: #241F1C;
+      --shadow: 0 -8px 30px rgba(0,0,0,.5);
+      --fold: rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #191614;
+    --paper-2: #211D1A;
+    --ink: #EDE6DC;
+    --muted: #A0958A;
+    --rule: #3A332E;
+    --peach: #4A3327;
+    --blue: #26384A;
+    --marigold: #4A3D1A;
+    --sage: #2C3D32;
+    --lavender: #3B3347; --clay: #4E2E24;
+    --page-ink: #EDE6DC;
+    --sheet: #241F1C;
+    --shadow: 0 -8px 30px rgba(0,0,0,.5);
+    --fold: rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.45;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+  button:focus-visible, a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 2px; }
+  a { color: inherit; }
+
+  .wrap { max-width: 980px; margin: 0 auto; padding-inline: 16px; padding-block: 0 48px; }
+
+  /* top bar */
+  .bar {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+    background: var(--paper);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding-block: 14px 10px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .brand { font-family: var(--mono); font-size: 13px; letter-spacing: .04em; color: var(--muted); }
+  .brand b { font-weight: 500; color: var(--ink); }
+  .brand .owl { vertical-align: -3px; margin-right: 8px; color: var(--muted); opacity: .8; }
+  .nav { display: flex; align-items: center; gap: 6px; }
+  .nav button {
+    font-family: var(--mono); font-size: 13px; color: var(--ink);
+    padding: 8px 10px; border-radius: 4px; min-width: 40px; text-align: center;
+  }
+  .nav button:hover { background: var(--paper-2); }
+  .nav button[disabled] { color: var(--rule); cursor: default; background: none; }
+  .datebtn { min-width: 0 !important; white-space: nowrap; }
+  .nav .forest { font-family: var(--mono); font-size: 13px; color: var(--muted); text-decoration: none; padding: 8px 10px; border-radius: 4px; white-space: nowrap; margin-left: 4px; }
+  .nav .forest:hover { background: var(--paper-2); color: var(--ink); }
+  @media (max-width: 520px) { .nav .forest span { display: none; } }
+  @media (max-width: 520px) { .brand span { display: none; } }
+
+  /* spread */
+  .spread { margin-top: 28px; }
+  .theme { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: .04em; margin: 0 0 14px 2px; }
+  .pages { display: grid; grid-template-columns: 1fr; gap: 10px; position: relative; }
+  .page {
+    color: var(--page-ink);
+    padding: 26px 22px 20px;
+    min-height: 240px;
+    display: flex; flex-direction: column; gap: 14px;
+    border-radius: 3px;
+    position: relative;
+  }
+  .page.peach { background: var(--peach); }
+  .page.blue { background: var(--blue); }
+  .page.marigold { background: var(--marigold); }
+  .page.sage { background: var(--sage); }
+  .page.lavender { background: var(--lavender); }
+  .page.clay { background: var(--clay); }
+  .page .side { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; opacity: .6; }
+  .page .body { flex: 1; display: flex; flex-direction: column; gap: 10px; max-width: 34em; }
+  .page p { margin: 0; }
+  .page p.hit { font-size: 1.28em; font-weight: 500; line-height: 1.25; text-wrap: balance; }
+  .page .source { font-family: var(--mono); font-size: 12px; line-height: 1.5; opacity: .8; }
+
+  .ref {
+    display: inline; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px;
+    border-radius: 2px; padding-inline: 1px; white-space: normal; text-align: inherit;
+  }
+  .body .ref::after {
+    content: ""; display: inline-block; width: 5px; height: 5px; border-radius: 50%;
+    background: currentColor; vertical-align: super; margin-left: 2px; opacity: .7;
+  }
+  .ref:hover { background: rgba(255,255,255,.28); }
+  :root[data-theme="dark"] .ref:hover { background: rgba(255,255,255,.08); }
+  .deeper { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 4px; }
+  .deeper .lbl { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; opacity: .65; margin-right: 4px; }
+  .deeper .pill {
+    font-family: var(--mono); font-size: 12px; text-decoration: none;
+    border: 1.5px solid currentColor; border-radius: 999px; padding: 4px 10px; line-height: 1.2;
+  }
+  .deeper .pill::after { content: " \2192"; opacity: .7; }
+
+  @media (min-width: 720px) {
+    .pages { grid-template-columns: 1fr 1fr; gap: 0; }
+    .page { min-height: 340px; padding: 34px 32px 26px; }
+    .page.left { border-radius: 4px 0 0 4px; padding-right: 36px; }
+    .page.right { border-radius: 0 4px 4px 0; padding-left: 36px; }
+    .pages::after {
+      content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 36px; transform: translateX(-50%);
+      background: linear-gradient(90deg, transparent, var(--fold) 50%, transparent);
+      pointer-events: none;
+    }
+  }
+
+  /* doodle */
+  .doodle { margin-top: 10px; border-radius: 3px; overflow: hidden; background: var(--paper-2); }
+  .doodle svg { display: block; width: 100%; height: auto; max-width: 100%; }
+  .doodle-note { font-family: var(--mono); font-size: 12px; line-height: 1.55; color: var(--muted); margin: 10px 2px 0; max-width: 62em; }
+
+  /* question */
+  .question {
+    margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--rule);
+    font-style: italic; font-size: 1.32em; line-height: 1.3; max-width: 26em; text-wrap: balance;
+  }
+  .question small { display: block; font-style: normal; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; color: var(--muted); margin-bottom: 8px; }
+
+  /* states */
+  .empty { margin-top: 60px; max-width: 30em; color: var(--muted); }
+  .empty b { color: var(--ink); font-weight: 500; }
+
+  /* sheet */
+  .backdrop { position: fixed; inset: 0; background: rgba(20,15,12,.35); z-index: 20; }
+  .sheet {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 21;
+    background: var(--sheet); color: var(--ink);
+    border-radius: 14px 14px 0 0; box-shadow: var(--shadow);
+    padding: 18px 20px; padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+    max-width: 640px; margin: 0 auto;
+    max-height: 70vh; overflow: auto;
+  }
+  .sheet .grip { width: 36px; height: 4px; border-radius: 2px; background: var(--rule); margin: 0 auto 14px; }
+  .sheet h3 { font-family: var(--mono); font-weight: 500; font-size: 13px; letter-spacing: .04em; margin: 0 0 10px; }
+  .sheet p { margin: 0 0 10px; max-width: 34em; }
+  .sheet .where { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 12px; line-height: 1.55; color: var(--muted); }
+  .page .source .srcref { text-align: left; font: inherit; }
+  .sheet .close { position: absolute; top: 12px; right: 14px; font-family: var(--mono); font-size: 13px; color: var(--muted); padding: 6px 8px; }
+
+  /* index list */
+  .index { list-style: none; margin: 0; padding: 0; }
+  .index li { border-top: 1px solid var(--rule); }
+  .index li:first-child { border-top: 0; }
+  .index button { width: 100%; text-align: left; padding: 12px 2px; display: flex; gap: 14px; align-items: baseline; }
+  .index button:hover { background: var(--paper-2); }
+  .index .d { font-family: var(--mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .index .t { font-size: 15px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .spread { animation: fade .35s ease-out both; }
+    @keyframes fade { from { opacity: .4; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="bar">
+    <div class="brand"><svg class="owl" viewBox="0 0 24 28" width="14" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="15" rx="8" ry="9"/><path d="M6 8 L4 2 L9 6 M18 8 L20 2 L15 6"/><circle cx="8.5" cy="12" r="3"/><circle cx="15.5" cy="12" r="3"/><circle cx="8.5" cy="12" r="1" fill="currentColor"/><circle cx="15.5" cy="12" r="1" fill="currentColor"/></svg><b>same forest</b><span> &nbsp;·&nbsp; one spread a day</span></div>
+    <nav class="nav" aria-label="days">
+      <button id="prev" title="earlier">&larr;</button>
+      <button id="datebtn" class="datebtn" title="all days">&nbsp;</button>
+      <button id="next" title="later">&rarr;</button>
+      <a class="forest" href="the-whole-forest.html" title="the whole forest: the people behind the spreads"><span>the whole </span>forest &rarr;</a>
+    </nav>
+  </header>
+  <main id="main">
+    <div class="empty" id="empty" hidden>
+      <p><b>nothing here yet.</b></p>
+      <p>the first spread lands at 5am. until then, breathe. the owl's already up.</p>
+    </div>
+  </main>
+</div>
+
+<div id="backdrop" class="backdrop" hidden></div>
+<div id="sheet" class="sheet" role="dialog" aria-modal="true" hidden></div>
+
+<script src="data/spreads.js"></script>
+<script>
+(function () {
+  const LINEAGE_COLOR = { christian: 'peach', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
+  const $ = (id) => document.getElementById(id);
+  const main = $('main'), empty = $('empty'), sheet = $('sheet'), backdrop = $('backdrop');
+  let spreads = [];      // newest first
+  let current = null;    // date id
+  let loaded = false;    // true once the store answered (or said no)
+
+  // --- helpers
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  function fmtDate(id) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(id || '');
+    if (!m) return id || '';
+    const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+    return d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' }).toLowerCase();
+  }
+  // [[key|shown text]] or [[key]] -> tappable reference
+  function markup(text, refs) {
+    const lines = String(text || '').split(/\n+/).map((l) => l.trim()).filter(Boolean);
+    return lines.map((line, i) => {
+      const html = esc(line).replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, key, shown) => {
+        key = key.trim();
+        const label = (shown || key).trim();
+        return refs && refs[key] ? `<button class="ref" data-ref="${esc(key)}">${label}</button>` : label;
+      });
+      return `<p${i === 0 ? ' class="hit"' : ''}>${html}</p>`;
+    }).join('');
+  }
+  function safeSvg(svg) {
+    if (!svg || typeof svg !== 'string') return '';
+    try {
+      const doc = new DOMParser().parseFromString(svg, 'image/svg+xml');
+      const root = doc.documentElement;
+      if (!root || root.nodeName.toLowerCase() !== 'svg') return '';
+      root.querySelectorAll('script, foreignObject, iframe, object, embed, image').forEach((n) => n.remove());
+      root.querySelectorAll('*').forEach((el) => {
+        [...el.attributes].forEach((a) => {
+          const n = a.name.toLowerCase(), v = a.value;
+          const badUrl = /url\(/i.test(v) && !/^url\(#[\w-]+\)$/i.test(v.trim());
+          if (n.startsWith('on') || n === 'href' || n === 'xlink:href' || badUrl || /javascript:/i.test(v)) el.removeAttribute(a.name);
+        });
+      });
+      root.setAttribute('role', 'img');
+      return new XMLSerializer().serializeToString(root);
+    } catch (e) { return ''; }
+  }
+  function doorsOn(p, refs) { // every reference this page opens, in order of appearance
+    const keys = [];
+    String(p.text || '').replace(/\[\[([^\]|]+)(?:\|[^\]]+)?\]\]/g, (_, k) => { k = k.trim(); if (refs[k] && !keys.includes(k)) keys.push(k); return ''; });
+    if (p.sourceRef && refs[p.sourceRef] && !keys.includes(p.sourceRef)) keys.push(p.sourceRef);
+    return keys;
+  }
+  function pageHtml(side, p, refs) {
+    if (!p) return '';
+    const color = p.color || LINEAGE_COLOR[p.lineage] || 'lavender';
+    const src = p.sourceRef && refs[p.sourceRef]
+      ? `<button class="ref srcref" data-ref="${esc(p.sourceRef)}">${esc(p.source)}</button>`
+      : esc(p.source);
+    const doors = doorsOn(p, refs);
+    const deeper = doors.length ? `<div class="deeper"><span class="lbl">go deeper</span>${doors.map((k) => `<button class="ref pill" data-ref="${esc(k)}">${esc(refs[k].name || k)}</button>`).join('')}</div>` : '';
+    return `<section class="page ${side} ${esc(color)}">
+      <div class="side">${side} page</div>
+      <div class="body">${markup(p.text, refs)}</div>
+      ${deeper}
+      <div class="source">${src}</div>
+    </section>`;
+  }
+
+  // --- render
+  function render() {
+    const old = main.querySelector('.spread'); if (old) old.remove();
+    const idx = spreads.findIndex((s) => s.id === current);
+    const s = idx >= 0 ? spreads[idx] : null;
+    empty.hidden = !(loaded && !spreads.length);
+    $('prev').disabled = !s || idx >= spreads.length - 1;
+    $('next').disabled = !s || idx <= 0;
+    $('datebtn').textContent = s ? fmtDate(s.id) : (loaded ? 'days' : '…');
+    if (!s) return;
+    const refs = s.refs || {};
+    const svg = safeSvg(s.doodle && s.doodle.svg);
+    const el = document.createElement('article');
+    el.className = 'spread';
+    el.innerHTML = `
+      ${s.theme ? `<div class="theme">${esc(s.theme)}</div>` : ''}
+      <div class="pages">${pageHtml('left', s.left, refs)}${pageHtml('right', s.right, refs)}</div>
+      ${svg ? `<div class="doodle">${svg}</div>` : ''}
+      ${s.doodle && s.doodle.note ? `<div class="doodle-note">${esc(s.doodle.note)}</div>` : ''}
+      ${s.question ? `<div class="question"><small>sit with this</small>${esc(s.question)}</div>` : ''}
+    `;
+    main.appendChild(el);
+    el.querySelectorAll('.ref').forEach((b) => b.addEventListener('click', () => openRef(refs[b.dataset.ref], b.textContent)));
+    try { if (location.hash.slice(1) !== s.id) history.replaceState(null, '', '#' + s.id); } catch (e) {}
+  }
+
+  // --- sheet (references + day index)
+  function openSheet(html) {
+    sheet.innerHTML = `<div class="grip"></div><button class="close" id="sheetclose">close</button>${html}`;
+    sheet.hidden = false; backdrop.hidden = false;
+    $('sheetclose').addEventListener('click', closeSheet);
+    $('sheetclose').focus();
+  }
+  function closeSheet() { sheet.hidden = true; backdrop.hidden = true; sheet.innerHTML = ''; }
+  function openRef(ref, label) {
+    if (!ref) return;
+    const lines = String(ref.lines || ref.text || '').split(/\n+/).filter(Boolean).map((l) => `<p>${esc(l)}</p>`).join('');
+    const where = ref.where ? `<div class="where">${esc(ref.where)}</div>` : '';
+    openSheet(`<h3>${esc(ref.name || label)}</h3>${lines}${where}`);
+  }
+  function openIndex() {
+    if (!spreads.length) return;
+    const items = spreads.map((s) => `<li><button data-go="${esc(s.id)}"><span class="d">${esc(fmtDate(s.id))}</span><span class="t">${esc(s.theme || (s.left && s.left.text || '').split('\n')[0])}</span></button></li>`).join('');
+    openSheet(`<h3>all days</h3><ul class="index">${items}</ul>`);
+    sheet.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => { current = b.dataset.go; closeSheet(); render(); window.scrollTo({ top: 0 }); }));
+  }
+  backdrop.addEventListener('click', closeSheet);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !sheet.hidden) return closeSheet();
+    if (!sheet.hidden) return;
+    if (e.key === 'ArrowLeft') step(1);
+    if (e.key === 'ArrowRight') step(-1);
+  });
+  function step(dir) { // +1 = earlier, -1 = later
+    const idx = spreads.findIndex((s) => s.id === current);
+    const n = idx + dir;
+    if (idx < 0 || n < 0 || n >= spreads.length) return;
+    current = spreads[n].id; render(); window.scrollTo({ top: 0 });
+  }
+  $('prev').addEventListener('click', () => step(1));
+  $('next').addEventListener('click', () => step(-1));
+  $('datebtn').addEventListener('click', openIndex);
+  let tx = null;
+  document.addEventListener('touchstart', (e) => { tx = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    if (tx == null || !sheet.hidden) return;
+    const dx = e.changedTouches[0].clientX - tx; tx = null;
+    if (Math.abs(dx) > 70) step(dx > 0 ? 1 : -1);
+  }, { passive: true });
+
+  // --- data
+  function accept(list) {
+    spreads = list.filter((s) => s && s.id).sort((a, b) => (a.id < b.id ? 1 : -1));
+    const want = (location.hash || '').slice(1);
+    if (!current || !spreads.some((s) => s.id === current)) current = spreads.some((s) => s.id === want) ? want : (spreads[0] && spreads[0].id) || null;
+    render();
+  }
+  try { const c = (window.SAME_FOREST_SPREADS || null); if (Array.isArray(c) && c.length) accept(c); else render(); } catch (e) { render(); }
+
+  (async () => {
+    const db = window.claude && window.claude.use ? await window.claude.use('db') : null;
+    if (!db) { loaded = true; render(); return; }
+    db.collection('spreads').orderBy('date', 'desc').limit(400).onSnapshot((snap) => {
+      loaded = true;
+      accept(snap.docs.filter((d) => d.exists).map((d) => Object.assign({ id: d.id }, d.data())));
+    }, (err) => { console.warn('spreads', err); loaded = true; render(); });
+  })();
+})();
+</script>
+</body>
+</html>
