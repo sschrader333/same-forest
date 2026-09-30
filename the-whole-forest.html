@@ -23,6 +23,7 @@
     --sage: #C5D6BD;
     --lavender: #D8CCE6;
     --clay: #D9A98C;
+    --teal: #A6D6D1;
     --page-ink: #2A2420;
     --sheet: #FBF8F2;
     --shadow: 0 -8px 30px rgba(42,36,32,.18);
@@ -34,14 +35,14 @@
     :root:not([data-theme="light"]) {
       color-scheme: dark;
       --paper: #191614; --paper-2: #211D1A; --ink: #EDE6DC; --muted: #A0958A; --rule: #3A332E;
-      --peach: #4A3327; --blue: #26384A; --marigold: #4A3D1A; --sage: #2C3D32; --lavender: #3B3347; --clay: #4E2E24;
+      --peach: #4A3327; --blue: #26384A; --marigold: #4A3D1A; --sage: #2C3D32; --lavender: #3B3347; --clay: #4E2E24; --teal: #1F3F3C;
       --page-ink: #EDE6DC; --sheet: #241F1C; --shadow: 0 -8px 30px rgba(0,0,0,.5); --wash: rgba(255,255,255,.07);
     }
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
     --paper: #191614; --paper-2: #211D1A; --ink: #EDE6DC; --muted: #A0958A; --rule: #3A332E;
-    --peach: #4A3327; --blue: #26384A; --marigold: #4A3D1A; --sage: #2C3D32; --lavender: #3B3347; --clay: #4E2E24;
+    --peach: #4A3327; --blue: #26384A; --marigold: #4A3D1A; --sage: #2C3D32; --lavender: #3B3347; --clay: #4E2E24; --teal: #1F3F3C;
     --page-ink: #EDE6DC; --sheet: #241F1C; --shadow: 0 -8px 30px rgba(0,0,0,.5); --wash: rgba(255,255,255,.07);
   }
 
@@ -76,7 +77,7 @@
   .chip .dot { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--page-ink); opacity: .9; }
   .chip[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
   .chip[aria-pressed="true"] .dot { border-color: var(--paper); }
-  .dot.peach { background: var(--peach); } .dot.blue { background: var(--blue); } .dot.marigold { background: var(--marigold); } .dot.sage { background: var(--sage); } .dot.lavender { background: var(--lavender); } .dot.clay { background: var(--clay); }
+  .dot.peach { background: var(--peach); } .dot.blue { background: var(--blue); } .dot.marigold { background: var(--marigold); } .dot.sage { background: var(--sage); } .dot.lavender { background: var(--lavender); } .dot.clay { background: var(--clay); } .dot.teal { background: var(--teal); }
   .search { margin-left: auto; font-family: var(--mono); font-size: 13px; color: var(--ink); background: var(--paper-2); border: 1px solid var(--rule); border-radius: 999px; padding: 7px 12px; min-width: 0; width: 160px; }
   .search::placeholder { color: var(--muted); }
 
@@ -94,7 +95,7 @@
   .card .nm { font-size: 1.12em; font-weight: 500; line-height: 1.2; }
   .card .yr { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; opacity: .7; }
   .card .hit { font-size: .95em; line-height: 1.35; opacity: .9; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-  .peach { background: var(--peach); } .blue { background: var(--blue); } .marigold { background: var(--marigold); } .sage { background: var(--sage); } .lavender { background: var(--lavender); } .clay { background: var(--clay); }
+  .peach { background: var(--peach); } .blue { background: var(--blue); } .marigold { background: var(--marigold); } .sage { background: var(--sage); } .lavender { background: var(--lavender); } .clay { background: var(--clay); } .teal { background: var(--teal); }
   .lineage-lbl { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; opacity: .65; }
 
   /* crossings (timeline) */
@@ -255,7 +256,7 @@
 
   <main id="main">
     <div id="tray" hidden></div>
-    <p class="intro" id="intro"><b>no dogma, no limits, no grading the trees.</b> the people the morning spreads keep quoting: what they said, where they struggled, what they got wrong, what they did the morning after, and every time two of them ran into each other. tap anybody.</p>
+    <p class="intro" id="intro"><b>no dogma, no limits, no grading the trees.</b> the people the morning spreads keep quoting: what they said, where they struggled, what they got wrong, what they did the morning after, and every time two of them ran into each other. tap anybody. <button class="pl" id="aboutbtn">what is this?</button></p>
     <div id="view"></div>
     <div class="empty" id="empty" hidden>
       <p><b>the forest's empty.</b></p>
@@ -272,8 +273,8 @@
 <script src="data/forest.js"></script>
 <script>
 (function () {
-  const LC = { christian: 'peach', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
-  const LNAME = { christian: 'bible, and the christians', buddhist: 'the buddhists', hindu: 'the hindus', tao: 'the tao', native: 'turtle island', other: 'the rest of us' };
+  const LC = { christian: 'peach', muslim: 'teal', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
+  const LNAME = { christian: 'bible, and the christians', muslim: 'the muslims', buddhist: 'the buddhists', hindu: 'the hindus', tao: 'the tao', native: 'turtle island', other: 'the rest of us' };
   const THREADS = ['psychedelics', 'addiction', 'grief', 'doubt', 'anger', 'nonviolence', 'dying', 'the body', 'money', 'exile', 'prison', 'war', 'family', 'loneliness', 'joy', 'silence', 'work', 'forgiveness', 'madness', 'wandering', 'love', 'the land', 'fame'];
   const TNOTE = { psychedelics: 'the mushroom, the acid, the cactus. what it did for people and what it cost them. nobody here is telling you to take anything.', addiction: 'drink, drugs, the thing you cannot put down.', grief: 'somebody died and they had to keep going.', doubt: 'the years where none of it felt true.', anger: 'the ones who had a temper, or were right to be furious.', nonviolence: 'the ones who would not hit back, and what it cost.', dying: 'how they faced it, their own or somebody else\'s.', 'the body': 'sickness, pain, hunger, sex, the animal you live in.', money: 'having it, giving it away, being broke.', exile: 'thrown out, run off, far from home.', prison: 'locked up, and what they made of it.', war: 'soldiers, survivors, the ones who refused.', family: 'parents, kids, marriages, the people you cannot pick.', loneliness: 'alone, sometimes on purpose.', joy: 'the ones who were, somehow, happy.', silence: 'the ones who shut up and listened.', work: 'the daily grind as the practice.', forgiveness: 'letting it go, or trying to.', madness: 'breakdowns, panic, visions the doctors had another word for.', wandering: 'the road, the pilgrimage, the not staying put.', love: 'the ones who loved somebody, or everybody.', 'the land': 'the ground under them and what it meant.', fame: 'being known, and what it does to a person.' };
   const $ = (id) => document.getElementById(id);
@@ -286,6 +287,7 @@
   const SORTS = [['name', 'a to z'], ['old', 'oldest first'], ['new', 'newest first'], ['lineage', 'by lineage'], ['mess', 'messiest first'], ['shuffle', 'shuffle']];
   let loaded = false, canEdit = false, db = null;
   let openKey = null;                        // person currently open
+  let showTerms = false, bulkBusy = false;   // tray: many pending doors collapse into one row
 
   // --- helpers
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -513,6 +515,8 @@
   }
   function closeSheet() { sheet.hidden = true; backdrop2.hidden = true; sheet.innerHTML = ''; }
   backdrop2.addEventListener('click', closeSheet);
+  const ABOUT = "<p>a forest of people.</p><p>every tradition has a few who quit arguing about god and went to look for themselves. a monk in a cell, a weaver at his loom, a professor who lost his voice in front of his class, a woman walking through town with a torch and a bucket of water. people call them mystics. all it means is they wanted the thing itself and not the description.</p><p>here's the strange part. most of them never met. they lived centuries and oceans apart, in religions that were sometimes at war with each other, and they keep coming back sounding alike. it can't be put into words, and the one who's out looking for it is most of what's in the way. they don't agree on everything, and where they argue is some of the best reading in here.</p><p>so this isn't a religion and it isn't against one. it's the people, told straight. what they saw, what they said, what they got wrong, and what they did the morning after. nobody's been cleaned up. some of them drank. some of them were hard to live with. it's on the page.</p><p>the only thing it asks is that you walk in not knowing. the zen people call that don't know mind. you don't have to believe any of it or pick a team. look at a catholic monk and a sufi poet the way you'd look at two trees, and notice what they're both bending toward.</p><p>we like to say we were made in god's image, and then we mostly make god in ours. the people in here did that too. some of them caught themselves at it, and that's where it gets interesting.</p><p>start anywhere. tap a tree. follow a dotted line to somebody they crossed paths with. a dotted underline opens a word. nobody's grading you in here.</p>";
+  $('aboutbtn').addEventListener('click', () => openSheet('<h3>what is this</h3>' + ABOUT));
   function openTerm(key) {
     const t = terms[key]; if (!t) return;
     const lines = String(t.lines || '').split(/\n+/).filter(Boolean).map((l) => `<p>${esc(l)}</p>`).join('');
@@ -560,7 +564,7 @@
   }
 
   // --- the forest itself
-  const GROVES = ['christian', 'buddhist', 'hindu', 'tao', 'native', 'other'];
+  const GROVES = ['christian', 'muslim', 'buddhist', 'hindu', 'tao', 'native', 'other'];
   function xOfYear(y) { // piecewise: old years squeezed, modern years stretched
     const segs = [[-1400, 0, 60, 260], [0, 1500, 260, 620], [1500, 1900, 620, 1000], [1900, 2030, 1000, 1370]];
     for (const [a, b, xa, xb] of segs) if (y >= a && y <= b) return xa + (y - a) / (b - a) * (xb - xa);
@@ -575,6 +579,7 @@
     else if (p.lineage === 'hindu') body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.5}'/><path d='M ${x - w * 0.3} ${y} L ${x - w * 0.25} ${y - h * 0.45} M ${x + w * 0.3} ${y} L ${x + w * 0.25} ${y - h * 0.45}' opacity='.6'/><path class='canopy' d='M ${x - w * 0.6} ${y - h * 0.5} C ${x - w * 0.6} ${y - h * 0.9} ${x + w * 0.6} ${y - h * 0.9} ${x + w * 0.6} ${y - h * 0.5} C ${x + w * 0.3} ${y - h * 0.42} ${x - w * 0.3} ${y - h * 0.42} ${x - w * 0.6} ${y - h * 0.5} Z' fill='${c}'/>`;
     else if (p.lineage === 'tao') body = `<path d='M ${x} ${y} C ${x - 2} ${y - h * 0.4} ${x + 3} ${y - h * 0.6} ${x} ${y - h * 0.75}'/><path class='canopy' d='M ${x - w * 0.5} ${y - h * 0.55} C ${x - w * 0.5} ${y - h * 1.05} ${x + w * 0.5} ${y - h * 1.05} ${x + w * 0.5} ${y - h * 0.55} C ${x + w * 0.45} ${y - h * 0.25} ${x + w * 0.2} ${y - h * 0.1} ${x + w * 0.2} ${y - h * 0.35} C ${x} ${y - h * 0.05} ${x - w * 0.2} ${y - h * 0.15} ${x - w * 0.2} ${y - h * 0.35} C ${x - w * 0.3} ${y - h * 0.1} ${x - w * 0.5} ${y - h * 0.25} ${x - w * 0.5} ${y - h * 0.55} Z' fill='${c}'/>`;
     else if (p.lineage === 'native') body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.4} M ${x} ${y - h * 0.4} L ${x - w * 0.22} ${y - h * 0.62} M ${x} ${y - h * 0.4} L ${x + w * 0.2} ${y - h * 0.6}'/><path class='canopy' d='M ${x - w * 0.55} ${y - h * 0.6} C ${x - w * 0.6} ${y - h * 0.85} ${x - w * 0.25} ${y - h * 1.02} ${x} ${y - h * 0.9} C ${x + w * 0.25} ${y - h * 1.04} ${x + w * 0.6} ${y - h * 0.85} ${x + w * 0.55} ${y - h * 0.6} C ${x + w * 0.5} ${y - h * 0.45} ${x + w * 0.2} ${y - h * 0.4} ${x} ${y - h * 0.48} C ${x - w * 0.2} ${y - h * 0.4} ${x - w * 0.5} ${y - h * 0.45} ${x - w * 0.55} ${y - h * 0.6} Z' fill='${c}'/>`;
+    else if (p.lineage === 'muslim') body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.24}'/><path class='canopy' d='M ${x} ${y - h * 1.08} C ${x + w * 0.44} ${y - h * 0.72} ${x + w * 0.38} ${y - h * 0.26} ${x} ${y - h * 0.22} C ${x - w * 0.38} ${y - h * 0.26} ${x - w * 0.44} ${y - h * 0.72} ${x} ${y - h * 1.08} Z' fill='${c}'/>`;
     else body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.55}'/><path d='M ${x - 3} ${y - h * 0.25} L ${x - 5} ${y - h * 0.22} M ${x + 3} ${y - h * 0.4} L ${x + 5} ${y - h * 0.37}' opacity='.5'/><ellipse class='canopy' cx='${x}' cy='${y - h * 0.72}' rx='${w * 0.32}' ry='${h * 0.3}' fill='${c}'/>`;
     const label = p.name.length > 16 ? p.name.split(' ').slice(-1)[0] : p.name;
     const yr = typeof p.born === 'number' ? (p.born < 0 ? Math.abs(p.born) + ' bc' : String(p.born)) : '';
@@ -647,12 +652,27 @@
         <div class="nm">${esc(m.title)} <span class="lineage-lbl">${esc(m.when || '')}</span></div>
         <div class="flag">${esc(String(m.lines || '').split('\n')[0])}</div>
         <div class="acts"><button class="in">add it</button><button class="out">skip it</button></div>
-      </div>`).join('') + pt.map((t) => `<div class="item" data-kind="terms" data-key="${esc(t.key)}">
+      </div>`).join('') + (pt.length > 6 ? `<div class="item">
+        <div class="nm">${pt.length} new doors <span class="lineage-lbl">glossary</span></div>
+        <div class="flag">${esc(pt.slice(0, 12).map((t) => t.name || t.key).join(', '))}${pt.length > 12 ? ', and more' : ''}</div>
+        <div class="acts"><button class="in" id="allterms"${bulkBusy ? ' disabled' : ''}>${bulkBusy ? 'adding them' : `add all ${pt.length} doors`}</button><button class="peek" id="showterms">${showTerms ? 'hide the list' : 'go through them one by one'}</button></div>
+      </div>` : '') + (pt.length > 6 && !showTerms ? [] : pt).map((t) => `<div class="item" data-kind="terms" data-key="${esc(t.key)}">
         <div class="nm">${esc(t.name || t.key)} <span class="lineage-lbl">${esc(t.kind || 'word')} · a new door</span></div>
         <div class="flag">${esc(String(t.lines || '').split('\n')[0])}</div>
         <div class="acts"><button class="in">add the door</button><button class="out">skip it</button><button class="peek" data-previewterm="${esc(t.key)}">read it first</button></div>
       </div>`).join('');
-    trayEl.querySelectorAll('.item').forEach((it) => {
+    const st = $('showterms'); if (st) st.addEventListener('click', () => { showTerms = !showTerms; renderTray(); });
+    const at = $('allterms'); if (at) at.addEventListener('click', async () => {
+      if (!db || bulkBusy) return;
+      bulkBusy = true; renderTray();
+      let done = 0, failed = 0;
+      for (const t of pending(terms)) {
+        try { await db.doc('terms/' + t.key).update({ status: 'approved', approvedAt: new Date().toISOString() }); done++; } catch (e) { failed++; }
+      }
+      bulkBusy = false; renderTray();
+      toast(failed ? `${done} doors added, ${failed} didn't save. try again.` : `${done} doors added.`);
+    });
+    trayEl.querySelectorAll('.item[data-kind]').forEach((it) => {
       const kind = it.dataset.kind, key = it.dataset.key;
       it.querySelector('.in').addEventListener('click', async () => decide(kind, key, true, it));
       it.querySelector('.out').addEventListener('click', async () => decide(kind, key, false, it));
