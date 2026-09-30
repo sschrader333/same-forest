@@ -162,7 +162,7 @@
   /* doodle */
   .doodle { margin-top: 10px; border-radius: 3px; overflow: hidden; background: var(--paper-2); }
   .doodle svg { display: block; width: 100%; height: auto; max-width: 100%; }
-  .doodle-note { font-family: var(--mono); font-size: 12px; line-height: 1.55; color: var(--muted); margin: 10px 2px 0; max-width: 62em; }
+  .doodle-cap { font-style: italic; font-size: 1.02em; line-height: 1.4; color: var(--muted); margin: 12px auto 0; max-width: 34em; text-align: center; text-wrap: balance; }
 
   /* question */
   .question {
@@ -317,7 +317,7 @@
       ${s.theme ? `<div class="theme">${esc(s.theme)}</div>` : ''}
       <div class="pages">${pageHtml('left', s.left, refs)}${pageHtml('right', s.right, refs)}</div>
       ${svg ? `<div class="doodle">${svg}</div>` : ''}
-      ${s.doodle && s.doodle.note ? `<div class="doodle-note">${esc(s.doodle.note)}</div>` : ''}
+      ${s.caption ? `<div class="doodle-cap">${esc(s.caption)}</div>` : ''}
       ${s.question ? `<div class="question"><small>sit with this</small>${esc(s.question)}</div>` : ''}
     `;
     main.appendChild(el);

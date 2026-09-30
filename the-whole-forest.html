@@ -463,7 +463,6 @@
     personEl.innerHTML = `<div class="inner">
       <div class="top"><button id="pclose">&larr; back</button><span class="lineage-lbl">${esc(p.lineage)}</span></div>
       <div class="pic">${safeSvg(p.doodle && p.doodle.svg)}</div>
-      ${p.doodle && p.doodle.note ? `<p class="picnote">${esc(p.doodle.note)}</p>` : ''}
       <div class="head">${p.portrait ? `<div class="face">${safeSvg(p.portrait)}</div>` : ''}<h1>${esc(p.name)}</h1></div>
       <div class="meta">${p.years ? `<span>${esc(p.years)}</span>` : ''}${p.place ? `<span>${esc(p.place)}</span>` : ''}</div>
       <p class="hit">${esc(p.hit || '')}</p>
