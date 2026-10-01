@@ -213,18 +213,21 @@
     .spread { animation: fade .35s ease-out both; }
     @keyframes fade { from { opacity: .4; transform: translateY(4px); } to { opacity: 1; transform: none; } }
   }
+  .stoke-back { display: inline-block; font-family: var(--mono); font-size: 12px; letter-spacing: .04em; color: var(--muted); text-decoration: none; padding: 12px 2px 0; }
+  .stoke-back:hover { color: var(--ink); }
 </style>
-<script>(function(){var h=location.hash.slice(1);if(h&&!/^\d{4}-\d{2}-\d{2}$/.test(h))location.replace('the-whole-forest.html?v=202609302146#'+h);})();</script>
+<script>(function(){var h=location.hash.slice(1);if(h&&!/^\d{4}-\d{2}-\d{2}$/.test(h))location.replace('the-whole-forest.html?v=202610011423#'+h);})();</script>
 </head>
 <body>
 <div class="wrap">
+  <a class="stoke-back" href="https://www.stoketrailracing.com/races" target="_top">&larr; the stoke races</a>
   <header class="bar">
     <div class="brand"><svg class="owl" viewBox="0 0 24 28" width="14" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="15" rx="8" ry="9"/><path d="M6 8 L4 2 L9 6 M18 8 L20 2 L15 6"/><circle cx="8.5" cy="12" r="3"/><circle cx="15.5" cy="12" r="3"/><circle cx="8.5" cy="12" r="1" fill="currentColor"/><circle cx="15.5" cy="12" r="1" fill="currentColor"/></svg><b>same forest</b><span> &nbsp;·&nbsp; one spread a day</span></div>
     <nav class="nav" aria-label="days">
       <button id="prev" title="earlier">&larr;</button>
       <button id="datebtn" class="datebtn" title="all days">&nbsp;</button>
       <button id="next" title="later">&rarr;</button>
-      <a class="forest" href="the-whole-forest.html?v=202609302146" title="the whole forest: the people behind the spreads"><span>the whole </span>forest &rarr;</a>
+      <a class="forest" href="the-whole-forest.html?v=202610011423" title="the whole forest: the people behind the spreads"><span>the whole </span>forest &rarr;</a>
     </nav>
   </header>
   <main id="main">
@@ -238,7 +241,7 @@
 <div id="backdrop" class="backdrop" hidden></div>
 <div id="sheet" class="sheet" role="dialog" aria-modal="true" hidden></div>
 
-<script src="spreads.js?v=202609302146"></script>
+<script src="spreads.js?v=202610011423"></script>
 <script>
 (function () {
   const LINEAGE_COLOR = { jewish: 'olive', christian: 'peach', muslim: 'teal', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };

@@ -249,10 +249,13 @@
   .filters.threads { flex-wrap: wrap; } .filters.threads .chip .n { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-left: 6px; }
   .tnote { font-family: var(--serif); font-size: 17px; line-height: 1.45; margin: 4px 0 10px; max-width: 60ch; }
   @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
+  .stoke-back { display: inline-block; font-family: var(--mono); font-size: 12px; letter-spacing: .04em; color: var(--muted); text-decoration: none; padding: 12px 2px 0; }
+  .stoke-back:hover { color: var(--ink); }
 </style>
 </head>
 <body>
 <div class="wrap">
+  <a class="stoke-back" href="https://www.stoketrailracing.com/races" target="_top">&larr; the stoke races</a>
   <header class="bar">
     <div class="brand"><svg class="owl" viewBox="0 0 24 28" width="14" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="15" rx="8" ry="9"/><path d="M6 8 L4 2 L9 6 M18 8 L20 2 L15 6"/><circle cx="8.5" cy="12" r="3"/><circle cx="15.5" cy="12" r="3"/><circle cx="8.5" cy="12" r="1" fill="currentColor"/><circle cx="15.5" cy="12" r="1" fill="currentColor"/></svg><b>the whole forest</b><span> &nbsp;·&nbsp; everybody, all at once</span></div>
     <nav class="nav" aria-label="views">
@@ -262,7 +265,7 @@
       <button id="nav-words" data-view="words">words</button>
       <button id="nav-threads" data-view="threads">threads</button>
       <button id="wander" title="open somebody at random">wander</button>
-      <a href="index.html?v=202609302146" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
+      <a href="index.html?v=202610011423" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
     </nav>
   </header>
 
@@ -282,7 +285,7 @@
 <div id="sheet" class="sheet" role="dialog" aria-modal="true" hidden></div>
 <div id="person" class="person" role="dialog" aria-modal="true" hidden></div>
 
-<script src="forest.js?v=202609302146"></script>
+<script src="forest.js?v=202610011423"></script>
 <script>
 (function () {
   const LC = { jewish: 'olive', christian: 'peach', muslim: 'teal', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
