@@ -179,6 +179,13 @@
   }
   .question small { display: block; font-style: normal; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; color: var(--muted); margin-bottom: 8px; }
 
+  /* one line to carry through the day */
+  .carry { margin-top: 22px; background: var(--paper-2); border-radius: 4px; padding: 16px 18px 18px; font-size: 1.18em; line-height: 1.3; max-width: 26em; text-wrap: balance; }
+  .carry small { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; color: var(--muted); margin-bottom: 8px; }
+  /* a page reads as a talk now, so give the paragraphs air */
+  .page .body { gap: 13px; }
+  .page .body p:not(.hit) { line-height: 1.5; }
+
   /* states */
   .empty { margin-top: 60px; max-width: 30em; color: var(--muted); }
   .empty b { color: var(--ink); font-weight: 500; }
@@ -216,7 +223,7 @@
   .stoke-back { display: inline-block; font-family: var(--mono); font-size: 12px; letter-spacing: .04em; color: var(--muted); text-decoration: none; padding: 12px 2px 0; }
   .stoke-back:hover { color: var(--ink); }
 </style>
-<script>(function(){var h=location.hash.slice(1);if(h&&!/^\d{4}-\d{2}-\d{2}$/.test(h))location.replace('the-whole-forest.html?v=202610011423#'+h);})();</script>
+<script>(function(){var h=location.hash.slice(1);if(h&&!/^\d{4}-\d{2}-\d{2}$/.test(h))location.replace('the-whole-forest.html?v=202610051453#'+h);})();</script>
 </head>
 <body>
 <div class="wrap">
@@ -227,7 +234,7 @@
       <button id="prev" title="earlier">&larr;</button>
       <button id="datebtn" class="datebtn" title="all days">&nbsp;</button>
       <button id="next" title="later">&rarr;</button>
-      <a class="forest" href="the-whole-forest.html?v=202610011423" title="the whole forest: the people behind the spreads"><span>the whole </span>forest &rarr;</a>
+      <a class="forest" href="the-whole-forest.html?v=202610051453" title="the whole forest: the people behind the spreads"><span>the whole </span>forest &rarr;</a>
     </nav>
   </header>
   <main id="main">
@@ -241,7 +248,7 @@
 <div id="backdrop" class="backdrop" hidden></div>
 <div id="sheet" class="sheet" role="dialog" aria-modal="true" hidden></div>
 
-<script src="spreads.js?v=202610011423"></script>
+<script src="spreads.js?v=202610051453"></script>
 <script>
 (function () {
   const LINEAGE_COLOR = { jewish: 'olive', christian: 'peach', muslim: 'teal', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
@@ -250,7 +257,7 @@
   let spreads = [];      // newest first
   let current = null;    // date id
   let loaded = false;    // true once the store answered (or said no)
-  const ABOUT = "<p>one spread a day. two pages, two voices, one thing they're both looking at. sometimes they agree from different sides. sometimes they flat out disagree, and you get to hold both.</p><p>the voices come from all over. the bible, the buddha, the gita, the tao, the sufis, the people who were on this continent first. under the rules and the arguments, every tradition has people who went looking for the thing itself, and they come back sounding a lot alike.</p><p>you don't have to believe any of it. the zen people have a name for the way in, don't know mind. read it like you don't already know what it means.</p><p>an underlined word opens. the question at the bottom is the part to take with you. the people behind the spreads live in the whole forest, up at the top.</p>";
+  const ABOUT = "<p>one spread a day. two pages, two voices, one thing they're both looking at. sometimes they agree from different sides. sometimes they flat out disagree, and you get to hold both.</p><p>the voices come from all over. the bible, the buddha, the gita, the tao, the sufis, the people who were on this continent first. under the rules and the arguments, every tradition has people who went looking for the thing itself, and they come back sounding a lot alike.</p><p>you don't have to believe any of it. the zen people have a name for the way in, don't know mind. read it like you don't already know what it means.</p><p>an underlined word opens. the question at the bottom is the part to sit with, and the line under it is one to carry through the day. the people behind the spreads live in the whole forest, up at the top.</p>";
 
   // --- helpers
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -332,6 +339,7 @@
       ${svg ? `<div class="doodle">${svg}</div>` : ''}
       ${s.caption ? `<div class="doodle-cap">${esc(s.caption)}</div>` : ''}
       ${s.question ? `<div class="question"><small>sit with this</small>${esc(s.question)}</div>` : ''}
+      ${s.carry ? `<div class="carry"><small>carry this</small>${esc(s.carry)}</div>` : ''}
     `;
     main.appendChild(el);
     el.querySelectorAll('.ref').forEach((b) => b.addEventListener('click', () => openRef(refs[b.dataset.ref], b.textContent)));
