@@ -152,6 +152,19 @@
   .person .said blockquote { margin: 0; font-size: 1.15em; line-height: 1.3; font-style: italic; }
   .person .said .wh { font-family: var(--mono); font-size: 12px; opacity: .7; line-height: 1.5; margin-top: 4px; }
   .person .mess { padding: 14px 16px; border: 1.5px solid var(--page-ink); border-radius: 4px; display: flex; flex-direction: column; gap: 10px; }
+  /* flowers: for the favorites */
+  .card .pic .favmark { position: absolute; left: 10px; top: 10px; width: 36px; height: 36px; background: #F4EFE6; border: 2px solid #2A2420; border-radius: 50%; padding: 3px; box-sizing: border-box; }
+  .card .pic .favmark svg { display: block; width: 100%; height: 100%; }
+  .person .fav { display: flex; align-items: center; gap: 6px; background: #F4EFE6; color: #2A2420; border: 2px solid #2A2420; border-radius: 6px; padding: 10px 16px 10px 12px; margin: 14px 0 6px; width: fit-content; max-width: 100%; box-sizing: border-box; box-shadow: 4px 5px 0 rgba(42,36,32,.18); transform: rotate(-.6deg); }
+  .person .fav .fl { display: flex; flex: none; }
+  .person .fav .fl svg { width: 34px; height: 34px; margin-right: -9px; }
+  .person .fav .fl svg:nth-child(2) { transform: translateY(-4px) rotate(14deg); }
+  .person .fav p { margin: 0 0 0 14px; font-size: 1.02em; line-height: 1.3; }
+  .person .love { display: flex; flex-direction: column; gap: 10px; }
+  .person .love .lv { background: var(--wash); border-radius: 4px; padding: 14px 16px 15px; }
+  .person .love .lv h3 { margin: 0 0 6px; font-family: var(--serif); font-weight: 500; font-size: 1.18em; line-height: 1.2; }
+  .person .love .lv p { margin: 0 0 8px; } .person .love .lv p:last-child { margin-bottom: 0; }
+  .person .love.tryit .lv { background: none; border: 1.5px solid var(--page-ink); }
   .person .start { font-family: var(--mono); font-size: 13px; line-height: 1.6; opacity: .85; }
   .person .ran { display: flex; flex-direction: column; gap: 8px; }
   .person .ran button { display: flex; flex-direction: column; gap: 2px; align-items: flex-start; padding: 8px 0; border-top: 1px solid var(--page-ink); opacity: .9; width: 100%; }
@@ -265,7 +278,7 @@
       <button id="nav-words" data-view="words">words</button>
       <button id="nav-threads" data-view="threads">threads</button>
       <button id="wander" title="open somebody at random">wander</button>
-      <a href="index.html?v=202610051453" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
+      <a href="index.html?v=202610091840" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
     </nav>
   </header>
 
@@ -285,7 +298,7 @@
 <div id="sheet" class="sheet" role="dialog" aria-modal="true" hidden></div>
 <div id="person" class="person" role="dialog" aria-modal="true" hidden></div>
 
-<script src="forest.js?v=202610051453"></script>
+<script src="forest.js?v=202610091840"></script>
 <script>
 (function () {
   const LC = { jewish: 'olive', christian: 'peach', muslim: 'teal', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
@@ -448,13 +461,14 @@
     else if (sort === 'lineage') { const order = Object.keys(LC); out.sort((a, b) => order.indexOf(a.lineage) - order.indexOf(b.lineage) || born(a) - born(b)); }
     else if (sort === 'mess') out.sort((a, b) => messiness(b) - messiness(a) || byName(a, b));
     else if (sort === 'shuffle') { const h = (s) => { let x = 0; for (const c of s + shuffleSeed) x = (x * 31 + c.charCodeAt(0)) >>> 0; return x; }; out.sort((a, b) => h(a.key) - h(b.key)); }
-    else out.sort(byName);
+    else { out.sort(byName); out.sort((a, b) => (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0)); }   // a to z, with the favorites in the front row
     return out;
   }
   function countText(list) { const v = visible(list).length; return v === list.length ? `${list.length} people so far` : `${v} of ${list.length}`; }
+  const FLOWER = "<svg viewBox='0 0 40 40' aria-hidden='true' fill='none' stroke='#2A2420' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><ellipse cx='20' cy='8.6' rx='4.1' ry='6.8' transform='rotate(0 20 20)' fill='#F2D389'/><ellipse cx='20' cy='8.6' rx='4.1' ry='6.8' transform='rotate(36 20 20)' fill='#F2D389'/><ellipse cx='20' cy='8.6' rx='4.1' ry='6.8' transform='rotate(72 20 20)' fill='#F2D389'/><ellipse cx='20' cy='8.6' rx='4.1' ry='6.8' transform='rotate(108 20 20)' fill='#F2D389'/><ellipse cx='20' cy='8.6' rx='4.1' ry='6.8' transform='rotate(144 20 20)' fill='#F2D389'/><ellipse cx='20' cy='8.6' rx='4.1' ry='6.8' transform='rotate(180 20 20)' fill='#F2D389'/><ellipse cx='20' cy='8.6' rx='4.1' ry='6.8' transform='rotate(216 20 20)' fill='#F2D389'/><ellipse cx='20' cy='8.6' rx='4.1' ry='6.8' transform='rotate(252 20 20)' fill='#F2D389'/><ellipse cx='20' cy='8.6' rx='4.1' ry='6.8' transform='rotate(288 20 20)' fill='#F2D389'/><ellipse cx='20' cy='8.6' rx='4.1' ry='6.8' transform='rotate(324 20 20)' fill='#F2D389'/><circle cx='20' cy='20' r='6.4' fill='#D9A98C'/><path d='M17.6 19.2l.1.1M21.9 18.3l.1.1M20 22.3l.1.1'/></svg>";
   function cardsHtml(list) {
     return visible(list).map((p) => `<button class="card ${color(p)}" data-person="${esc(p.key)}">
-      <div class="pic">${safeSvg(p.doodle && p.doodle.svg)}${p.portrait ? `<div class="face">${safeSvg(p.portrait)}</div>` : ''}</div>
+      <div class="pic">${safeSvg(p.doodle && p.doodle.svg)}${p.portrait ? `<div class="face">${safeSvg(p.portrait)}</div>` : ''}${p.favorite ? `<span class="favmark" title="a favorite">${FLOWER}</span>` : ''}</div>
       <div class="txt"><span class="lineage-lbl">${esc(p.lineage)}</span><span class="nm">${esc(p.name)}</span><span class="yr">${esc(p.years || '')}</span><span class="hit">${esc(p.hit || '')}</span></div>
     </button>`).join('') || `<p class="empty" style="margin-top:8px">nobody matches that. try fewer letters.</p>`;
   }
@@ -499,13 +513,16 @@
       <div class="meta">${p.years ? `<span>${esc(p.years)}</span>` : ''}${p.place ? `<span>${esc(p.place)}</span>` : ''}</div>
       <p class="hit">${esc(p.hit || '')}</p>
       ${Array.isArray(p.threads) && p.threads.length ? `<div class="pthreads">${p.threads.filter((t) => THREADS.includes(t)).map((t) => `<button class="chip" data-thread="${esc(t)}">${esc(t)}</button>`).join('')}</div>` : ''}
+      ${p.favorite ? `<div class="fav"><span class="fl">${FLOWER}${FLOWER}${FLOWER}</span><p>${esc(p.favorite)}</p></div>` : ''}
       ${p.basically ? `<section><h2>so basically</h2><div class="basically">${markup(p.basically)}</div></section>` : ''}
+      ${Array.isArray(p.love) && p.love.length ? `<section><h2>why the flowers</h2><div class="love">${p.love.map((x) => `<div class="lv"><h3>${esc(x.t)}</h3>${markup(x.d)}</div>`).join('')}</div></section>` : ''}
       <section><h2>the story</h2><div class="story">${markup(p.story)}</div></section>
       ${Array.isArray(p.moments) && p.moments.length ? `<section><h2>a few more things</h2><div class="moments">${p.moments.map((m) => markup(m)).join('')}</div></section>` : ''}
       ${p.struggle ? `<section><h2>the struggle</h2><div class="struggle">${markup(p.struggle)}</div></section>` : ''}
       ${Array.isArray(p.said) && p.said.length ? `<section><h2>things they said</h2><div class="said">${p.said.map((s) => `<div><blockquote>${esc(s.q)}</blockquote>${s.where ? `<div class="wh">${esc(s.where)}</div>` : ''}</div>`).join('')}</div></section>` : ''}
       ${p.mess ? `<section><h2>the mess</h2><div class="mess">${markup(p.mess)}</div></section>` : ''}
       ${p.after ? `<section><h2>what they did next</h2><div class="after">${markup(p.after)}</div></section>` : ''}
+      ${Array.isArray(p.try) && p.try.length ? `<section><h2>try it</h2><div class="love tryit">${p.try.map((x) => `<div class="lv"><h3>${esc(x.t)}</h3>${markup(x.d)}</div>`).join('')}</div></section>` : ''}
       ${p.start ? `<section><h2>start here</h2><p class="start">${esc(p.start)}</p></section>` : ''}
       ${Array.isArray(p.learn) && p.learn.length ? `<section><h2>learn more</h2><div class="learn">${p.learn.filter((l) => l && /^https:\/\//.test(l.url)).map((l) => `<a class="lnk" href="${esc(l.url)}" target="_blank" rel="noopener" title="${esc(l.why || '')}">${esc(l.label || 'link')}</a>`).join('')}</div></section>` : ''}
       ${ran.length ? `<section><h2>ran into</h2><div class="ran">${ran.map((m) => `<button data-meeting="${esc(m.key)}"><span class="y">${esc(m.when || '')}</span><span class="t">${esc(m.title)}</span></button>`).join('')}</div></section>` : ''}
@@ -587,7 +604,7 @@
       const ps = list.filter((p) => (p.threads || []).includes(thread)).sort((a, b) => born(a) - born(b) || a.name.localeCompare(b.name));
       const ts = approved(terms).filter((t) => (t.threads || []).includes(thread)).sort((a, b) => (a.name || a.key).localeCompare(b.name || b.key));
       body = `<p class="tnote">${esc(TNOTE[thread] || '')} <button class="lnkcopy" data-share="t-${esc(encodeURIComponent(thread))}">copy link</button></p><p class="count">${ps.length} ${ps.length === 1 ? 'person' : 'people'}, oldest first</p><div class="grid">${ps.map((p) => `<button class="card ${color(p)}" data-person="${esc(p.key)}">
-      <div class="pic">${safeSvg(p.doodle && p.doodle.svg)}${p.portrait ? `<div class="face">${safeSvg(p.portrait)}</div>` : ''}</div>
+      <div class="pic">${safeSvg(p.doodle && p.doodle.svg)}${p.portrait ? `<div class="face">${safeSvg(p.portrait)}</div>` : ''}${p.favorite ? `<span class="favmark" title="a favorite">${FLOWER}</span>` : ''}</div>
       <div class="txt"><span class="lineage-lbl">${esc(p.lineage)}</span><span class="nm">${esc(p.name)}</span><span class="yr">${esc(p.years || '')}</span><span class="hit">${esc(p.hit || '')}</span></div>
     </button>`).join('') || '<p class="empty" style="margin-top:8px">nobody yet.</p>'}</div>` +
         (ts.length ? `<p class="count" style="margin-top:22px">${ts.length} doors</p><ul class="words">${ts.map((t) => `<li><button data-term="${esc(t.key)}"><span class="k">${esc(t.kind || 'word')}</span><span class="n">${esc(t.name || t.key)}</span></button></li>`).join('')}</ul>` : '');
@@ -672,8 +689,12 @@
     const taoOld = list.filter((p) => p.lineage === 'tao').sort((a, b) => born(a) - born(b))[0];
     const owl = taoOld && treePos[taoOld.key] ? (() => { const t = treePos[taoOld.key]; const sc = 0.9; return `<g transform='translate(${t.x + t.size * 0.22},${t.y - t.size * 0.5 - 27 * sc}) scale(${sc})' fill='none' stroke='var(--page-ink)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' opacity='.85'><ellipse cx='12' cy='15' rx='8' ry='9'/><path d='M6 8 L4 2 L9 6 M18 8 L20 2 L15 6'/><circle cx='8.5' cy='12' r='3'/><circle cx='15.5' cy='12' r='3'/><circle cx='8.5' cy='12' r='1' fill='var(--page-ink)'/><circle cx='15.5' cy='12' r='1' fill='var(--page-ink)'/><path d='M12 14 l -1.5 2.5 h 3 z' fill='var(--page-ink)'/><path d='M9 24 l -2 3 M15 24 l 2 3'/></g>`; })() : '';
     const H = top + bandH * GROVES.length + 6;
-    return `<div class="forestwrap"><svg viewBox='0 0 ${W} ${H}' fill='none' stroke='var(--page-ink)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' role='img' aria-label='the whole forest'>${grounds}${forks}${paths}${trees}${owl}</svg></div>
-      <p class="forest-hint">${['no','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'][GROVES.length] || GROVES.length} groves. in each one the oldest roots are on the left and the newest on the right, and the bigger the tree the older it is. the dotted paths are where two of them crossed. a solid root is where one grove grew out of another. tap a tree, or a root.${list.length ? ` ${list.length} trees so far.` : ''}</p>`;
+    const favs = list.filter((p) => p.favorite && treePos[p.key]).map((p) => { const t = treePos[p.key];
+      const petals = [0, 45, 90, 135, 180, 225, 270, 315].map((a) => `<ellipse cx='0' cy='-4.6' rx='1.9' ry='3' transform='rotate(${a})' fill='#F2D389'/>`).join('');
+      const f = (fx, hh, sc) => `<path d='M ${fx} ${t.y} L ${fx} ${t.y - hh}'/><path d='M ${fx} ${t.y - hh * 0.4} q 4 -3 5 1' /><g transform='translate(${fx},${t.y - hh - 4 * sc}) scale(${sc})' stroke-width='${1.1 / sc}'>${petals}<circle r='2.6' fill='#D9A98C'/></g>`;
+      return `<g stroke-width='1.4' pointer-events='none'>${f(t.x + t.size * 0.5 + 6, 15, 1.15)}${f(t.x + t.size * 0.5 + 19, 8, .9)}${f(t.x + t.size * 0.5 + 30, 12, 1)}</g>`; }).join('');
+    return `<div class="forestwrap"><svg viewBox='0 0 ${W} ${H}' fill='none' stroke='var(--page-ink)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' role='img' aria-label='the whole forest'>${grounds}${forks}${paths}${trees}${favs}${owl}</svg></div>
+      <p class="forest-hint">${['no','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'][GROVES.length] || GROVES.length} groves. in each one the oldest roots are on the left and the newest on the right, and the bigger the tree the older it is. the dotted paths are where two of them crossed. a solid root is where one grove grew out of another. tap a tree, or a root.${favs ? ' sunflowers grow under the favorites.' : ''}${list.length ? ` ${list.length} trees so far.` : ''}</p>`;
   }
   function wireForest() {
     const svg = viewEl.querySelector('svg'); if (!svg) return;
