@@ -212,6 +212,7 @@
   @media (min-width: 1100px) { .forestwrap svg { min-width: 0; } }
   .tree { cursor: pointer; }
   .tree text { font-family: var(--mono); font-size: 11px; fill: var(--ink); stroke: var(--paper); stroke-width: 3px; paint-order: stroke fill; pointer-events: none; }
+  .tree .tag { fill: var(--paper); opacity: .86; stroke: var(--page-ink); stroke-width: .8; pointer-events: none; }
   .tree text.yr { font-size: 9px; fill: var(--muted); }
   .tree:hover .canopy, .tree.on .canopy { stroke-width: 4; }
   .tree.dim { opacity: .35; }
@@ -278,7 +279,7 @@
       <button id="nav-words" data-view="words">words</button>
       <button id="nav-threads" data-view="threads">threads</button>
       <button id="wander" title="open somebody at random">wander</button>
-      <a href="index.html?v=202610191711" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
+      <a href="index.html?v=202610191938" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
     </nav>
   </header>
 
@@ -298,7 +299,7 @@
 <div id="sheet" class="sheet" role="dialog" aria-modal="true" hidden></div>
 <div id="person" class="person" role="dialog" aria-modal="true" hidden></div>
 
-<script src="forest.js?v=202610191711"></script>
+<script src="forest.js?v=202610191938"></script>
 <script>
 (function () {
   const LC = { jewish: 'olive', christian: 'peach', muslim: 'teal', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
@@ -632,12 +633,14 @@
     const label = p.name.includes(',') ? p.name.split(',').pop().trim() : (p.name.length > 16 ? p.name.split(' ').slice(-1)[0] : p.name);
     const yr = typeof p.born === 'number' ? (p.born < 0 ? Math.abs(p.born) + ' bc' : String(p.born)) : '';
     const ly = y + 16 + (2 - i) * 11 + 6;
-    return `<g class='tree' data-person='${k}' tabindex='0' role='button' aria-label='${esc(p.name)}'>${body}<text x='${x}' y='${ly}' text-anchor='middle'>${esc(label)}</text><text class='yr' x='${x}' y='${ly + 10}' text-anchor='middle'>${esc(yr)}</text></g>`;
+    const tw = Math.round(Math.max(label.length * 6.7, yr.length * 5.5) + 10), th = yr ? 24 : 14;
+    const tag = `<rect class='tag' x='${(x - tw / 2).toFixed(1)}' y='${ly - 10}' width='${tw}' height='${th}' rx='3'/>`;
+    return `<g class='tree' data-person='${k}' tabindex='0' role='button' aria-label='${esc(p.name)}'>${body}${tag}<text x='${x}' y='${ly}' text-anchor='middle'>${esc(label)}</text><text class='yr' x='${x}' y='${ly + 10}' text-anchor='middle'>${esc(yr)}</text></g>`;
   }
   let treePos = {};
   function forestHtml(list) {
     if (!list.length) return '';
-    const W = 1400, bandH = 215, top = 20, left = 24, right = 40;
+    const W = 1400, bandH = 229, top = 20, left = 24, right = 40;
     const bands = {}; GROVES.forEach((g, i) => bands[g] = top + i * bandH);
     treePos = {}; const bandTrees = {};
     GROVES.forEach((g) => {
@@ -654,19 +657,19 @@
         const age = 2030 - born(p);
         const size = Math.round(Math.max(36, Math.min(112, 36 + 76 * (Math.log(age + 10) - Math.log(40)) / (Math.log(2600) - Math.log(40)))));
         const row = i % 3;
-        treePos[p.key] = { x: xs[i], y: bands[g] + bandH - 44 - row * 11, size, row };
+        treePos[p.key] = { x: xs[i], y: bands[g] + bandH - 58 - row * 11, size, row };
       });
     });
     const xAtYear = (g, yr) => { const a = bandTrees[g] || []; if (!a.length) return null; if (yr <= a[0].yr) return a[0].x - 20; for (let i = 1; i < a.length; i++) if (yr <= a[i].yr) { const p0 = a[i - 1], p1 = a[i]; return p1.yr === p0.yr ? p1.x : p0.x + (yr - p0.yr) / (p1.yr - p0.yr) * (p1.x - p0.x); } return a[a.length - 1].x + 20; };
     const forks = approved(meetings).filter((m) => m.fork && ((m.fork.at && treePos[m.fork.at]) || (typeof m.fork.year === 'number' && m.fork.to in bands && xAtYear(m.fork.to, m.fork.year) != null))).map((m) => {
       const f = m.fork, to = (f.at && people[f.at] && people[f.at].lineage) || f.to;
       const inner = typeof f.year === 'number' && !(f.at && treePos[f.at]);
-      const t = inner ? { x: xAtYear(to, f.year), y: bands[to] + bandH - 40, size: 0 } : treePos[f.at];
+      const t = inner ? { x: xAtYear(to, f.year), y: bands[to] + bandH - 54, size: 0 } : treePos[f.at];
       const froms = (Array.isArray(f.from) ? f.from : [f.from]).filter((g) => g in bands);
       const lbl = esc(f.label || '');
       const segs = froms.map((g, n) => {
-        if (g === to) { const gy = bands[g] + bandH - 40; const d = `M ${t.x} ${bands[g] + 18} L ${t.x} ${gy + 6}`; return `<path class='hit' d='${d}'/><path class='within' d='${d}'/>`; }
-        const y0 = bands[g] + bandH - 40, down = bands[to] > bands[g];
+        if (g === to) { const gy = bands[g] + bandH - 54; const d = `M ${t.x} ${bands[g] + 18} L ${t.x} ${gy + 6}`; return `<path class='hit' d='${d}'/><path class='within' d='${d}'/>`; }
+        const y0 = bands[g] + bandH - 54, down = bands[to] > bands[g];
         const x0 = t.x - 22 + n * 44, y1 = down ? t.y - t.size * 1.02 : t.y + 2;
         const my = (y0 + y1) / 2;
         const d = `M ${x0} ${y0} C ${x0} ${my} ${t.x} ${my} ${t.x} ${y1}`; return `<path class='hit' d='${d}'/><path d='${d}'/>`;
@@ -687,7 +690,7 @@
     const FLW = ['marigold', 'peach', 'lavender', 'clay', 'paper', 'blue'];
     const defs = `<defs>${GROVES.map((g) => `<linearGradient id='sky-${g}' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='var(--${LC[g]})' stop-opacity='.06'/><stop offset='1' stop-color='var(--${LC[g]})' stop-opacity='.32'/></linearGradient>`).join('')}</defs>`;
     const grounds = GROVES.map((g, gi) => {
-      const y = bands[g] + bandH - 44, c = `var(--${LC[g]})`, r = rnd(g + 'ground');
+      const y = bands[g] + bandH - 58, c = `var(--${LC[g]})`, r = rnd(g + 'ground');
       const y0 = bands[g], y1 = bands[g] + bandH;
       let out = `<rect x='0' y='${y0}' width='${W}' height='${bandH}' fill='url(#sky-${g})' stroke='none'/>`;
       // far hills, two layers, soft
