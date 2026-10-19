@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="the whole forest: the people the traditions keep quoting, what they said, what they got wrong, and every time two of them crossed paths.">
+<meta name="description" content="the whole forest: the people the traditions keep quoting, what they said, what came at them, what they did with it, and every time two of them crossed paths.">
 <meta name="robots" content="noindex">
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 <title>the whole forest</title>
@@ -137,7 +137,7 @@
   .person .head h1 { margin-top: 0; }
   .person .moments { display: flex; flex-direction: column; gap: 10px; }
   .person .moments p { padding-left: 14px; border-left: 2px solid var(--page-ink); }
-  .person .after { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border-radius: 4px; background: var(--wash); }
+  .person .after { display: flex; flex-direction: column; gap: 10px; padding: 16px 18px; border-radius: 4px; background: var(--wash); border: 1.5px solid var(--page-ink); box-shadow: 4px 5px 0 rgba(42,36,32,.12); }
   .person .struggle { display: flex; flex-direction: column; gap: 10px; }
   .person .basically { font-size: 1.08em; line-height: 1.4; padding: 14px 16px; border-left: 3px solid var(--page-ink); background: var(--wash); border-radius: 0 4px 4px 0; }
   .sorts { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: -6px 0 14px; }
@@ -151,7 +151,7 @@
   .person .said { display: flex; flex-direction: column; gap: 14px; }
   .person .said blockquote { margin: 0; font-size: 1.15em; line-height: 1.3; font-style: italic; }
   .person .said .wh { font-family: var(--mono); font-size: 12px; opacity: .7; line-height: 1.5; margin-top: 4px; }
-  .person .mess { padding: 14px 16px; border: 1.5px solid var(--page-ink); border-radius: 4px; display: flex; flex-direction: column; gap: 10px; }
+  .person .mess { display: flex; flex-direction: column; gap: 10px; opacity: .92; }
   /* flowers: for the favorites */
   .card .pic .favmark { position: absolute; left: 10px; top: 10px; width: 36px; height: 36px; background: #F4EFE6; border: 2px solid #2A2420; border-radius: 50%; padding: 3px; box-sizing: border-box; }
   .card .pic .favmark svg { display: block; width: 100%; height: 100%; }
@@ -278,13 +278,13 @@
       <button id="nav-words" data-view="words">words</button>
       <button id="nav-threads" data-view="threads">threads</button>
       <button id="wander" title="open somebody at random">wander</button>
-      <a href="index.html?v=202610191624" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
+      <a href="index.html?v=202610191711" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
     </nav>
   </header>
 
   <main id="main">
     <div id="tray" hidden></div>
-    <p class="intro" id="intro"><b>no dogma, no limits, no grading the trees.</b> the people the morning spreads keep quoting: what they said, where they struggled, what they got wrong, what they did the morning after, and every time two of them ran into each other. tap anybody. <button class="pl" id="aboutbtn">what is this?</button></p>
+    <p class="intro" id="intro"><b>no dogma, no limits, no grading the trees.</b> the people the morning spreads keep quoting: what they said, what came at them, where they got it wrong, what they did with it, and every time two of them ran into each other. tap anybody. <button class="pl" id="aboutbtn">what is this?</button></p>
     <div id="view"></div>
     <div class="empty" id="empty" hidden>
       <p><b>the forest's empty.</b></p>
@@ -298,7 +298,7 @@
 <div id="sheet" class="sheet" role="dialog" aria-modal="true" hidden></div>
 <div id="person" class="person" role="dialog" aria-modal="true" hidden></div>
 
-<script src="forest.js?v=202610191624"></script>
+<script src="forest.js?v=202610191711"></script>
 <script>
 (function () {
   const LC = { jewish: 'olive', christian: 'peach', muslim: 'teal', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
@@ -312,7 +312,7 @@
   let letter = null;
   let view = 'forest', filter = null, q = '', sort = 'name', wq = '', thread = null, openX = {};
   try { sort = localStorage.getItem('wf.sort') || 'name'; } catch (e) {}
-  const SORTS = [['name', 'a to z'], ['old', 'oldest first'], ['new', 'newest first'], ['lineage', 'by lineage'], ['mess', 'messiest first'], ['shuffle', 'shuffle']];
+  const SORTS = [['name', 'a to z'], ['old', 'oldest first'], ['new', 'newest first'], ['lineage', 'by lineage'], ['shuffle', 'shuffle']];
   let loaded = false, canEdit = false, db = null;
   let openKey = null;                        // person currently open
   let showTerms = false, bulkBusy = false;   // tray: many pending doors collapse into one row
@@ -452,14 +452,12 @@
   function wireCards(grid) { grid.querySelectorAll('.card').forEach((c) => c.addEventListener('click', () => openPerson(c.dataset.person))); }
   let shuffleSeed = Math.random();
   function born(p) { return typeof p.born === 'number' ? p.born : (typeof p.year === 'number' ? p.year : 0); }
-  function messiness(p) { const m = String(p.mess || ''); return /^nothing (i know of|gross)/.test(m.trim()) ? 0 : m.length; }
   function visible(list) {
     const out = list.filter((p) => (!filter || p.lineage === filter) && (!q || (p.name + ' ' + (p.hit || '') + ' ' + (p.basically || '') + ' ' + (p.place || '') + ' ' + (p.lineage || '') + ' ' + (Array.isArray(p.threads) ? p.threads.join(' ') : '')).toLowerCase().includes(q)));
     const byName = (a, b) => a.name.localeCompare(b.name);
     if (sort === 'old') out.sort((a, b) => born(a) - born(b) || byName(a, b));
     else if (sort === 'new') out.sort((a, b) => born(b) - born(a) || byName(a, b));
     else if (sort === 'lineage') { const order = Object.keys(LC); out.sort((a, b) => order.indexOf(a.lineage) - order.indexOf(b.lineage) || born(a) - born(b)); }
-    else if (sort === 'mess') out.sort((a, b) => messiness(b) - messiness(a) || byName(a, b));
     else if (sort === 'shuffle') { const h = (s) => { let x = 0; for (const c of s + shuffleSeed) x = (x * 31 + c.charCodeAt(0)) >>> 0; return x; }; out.sort((a, b) => h(a.key) - h(b.key)); }
     else { out.sort(byName); out.sort((a, b) => (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0)); }   // a to z, with the favorites in the front row
     return out;
@@ -518,10 +516,10 @@
       ${Array.isArray(p.love) && p.love.length ? `<section><h2>why the flowers</h2><div class="love">${p.love.map((x) => `<div class="lv"><h3>${esc(x.t)}</h3>${markup(x.d)}</div>`).join('')}</div></section>` : ''}
       <section><h2>the story</h2><div class="story">${markup(p.story)}</div></section>
       ${Array.isArray(p.moments) && p.moments.length ? `<section><h2>a few more things</h2><div class="moments">${p.moments.map((m) => markup(m)).join('')}</div></section>` : ''}
-      ${p.struggle ? `<section><h2>the struggle</h2><div class="struggle">${markup(p.struggle)}</div></section>` : ''}
+      ${p.struggle ? `<section><h2>what came at them</h2><div class="struggle">${markup(p.struggle)}</div></section>` : ''}
+      ${p.mess && !/^nothing [^.]{0,40}\.?$/.test(p.mess.trim()) ? `<section><h2>their own part in it</h2><div class="mess">${markup(p.mess)}</div></section>` : ''}
+      ${p.after ? `<section><h2>what they did with it</h2><div class="after">${markup(p.after)}</div></section>` : ''}
       ${Array.isArray(p.said) && p.said.length ? `<section><h2>things they said</h2><div class="said">${p.said.map((s) => `<div><blockquote>${esc(s.q)}</blockquote>${s.where ? `<div class="wh">${esc(s.where)}</div>` : ''}</div>`).join('')}</div></section>` : ''}
-      ${p.mess ? `<section><h2>the mess</h2><div class="mess">${markup(p.mess)}</div></section>` : ''}
-      ${p.after ? `<section><h2>what they did next</h2><div class="after">${markup(p.after)}</div></section>` : ''}
       ${Array.isArray(p.try) && p.try.length ? `<section><h2>try it</h2><div class="love tryit">${p.try.map((x) => `<div class="lv"><h3>${esc(x.t)}</h3>${markup(x.d)}</div>`).join('')}</div></section>` : ''}
       ${p.start ? `<section><h2>start here</h2><p class="start">${esc(p.start)}</p></section>` : ''}
       ${Array.isArray(p.learn) && p.learn.length ? `<section><h2>learn more</h2><div class="learn">${p.learn.filter((l) => l && /^https:\/\//.test(l.url)).map((l) => `<a class="lnk" href="${esc(l.url)}" target="_blank" rel="noopener" title="${esc(l.why || '')}">${esc(l.label || 'link')}</a>`).join('')}</div></section>` : ''}
@@ -564,7 +562,7 @@
   }
   function closeSheet() { sheet.hidden = true; backdrop2.hidden = true; sheet.innerHTML = ''; }
   backdrop2.addEventListener('click', closeSheet);
-  const ABOUT = "<p>a forest of people.</p><p>every tradition has a few who quit arguing about god and went to look for themselves. a monk in a cell, a weaver at his loom, a professor who lost his voice in front of his class, a woman walking through town with a torch and a bucket of water. people call them mystics. all it means is they wanted the thing itself and not the description.</p><p>here's the strange part. most of them never met. they lived centuries and oceans apart, in religions that were sometimes at war with each other, and they keep coming back sounding alike. it can't be put into words, and the one who's out looking for it is most of what's in the way. they don't agree on everything, and where they argue is some of the best reading in here.</p><p>so this isn't a religion and it isn't against one. it's the people, told straight. what they saw, what they said, what they got wrong, and what they did the morning after. nobody's been cleaned up. some of them drank. some of them were hard to live with. it's on the page.</p><p>the only thing it asks is that you walk in not knowing. the zen people call that don't know mind. you don't have to believe any of it or pick a team. look at a catholic monk and a sufi poet the way you'd look at two trees, and notice what they're both bending toward.</p><p>we like to say we were made in god's image, and then we mostly make god in ours. the people in here did that too. some of them caught themselves at it, and that's where it gets interesting.</p><p>start anywhere. tap a tree. follow a dotted line to somebody they crossed paths with. a dotted underline opens a word. nobody's grading you in here.</p>";
+  const ABOUT = "<p>a forest of people.</p><p>every tradition has a few who quit arguing about god and went to look for themselves. a monk in a cell, a weaver at his loom, a professor who lost his voice in front of his class, a woman walking through town with a torch and a bucket of water. people call them mystics. all it means is they wanted the thing itself and not the description.</p><p>here's the strange part. most of them never met. they lived centuries and oceans apart, in religions that were sometimes at war with each other, and they keep coming back sounding alike. it can't be put into words, and the one who's out looking for it is most of what's in the way. they don't agree on everything, and where they argue is some of the best reading in here.</p><p>so this isn't a religion and it isn't against one. it's the people, told straight. what they saw, what they said, what came at them, where they got it wrong, and what they did with it. nobody's been cleaned up. some of them drank. some of them were hard to live with. it's on the page, in one breath, and then the page moves on to the part that matters, which is what they did about it. nobody here is on trial.</p><p>the only thing it asks is that you walk in not knowing. the zen people call that don't know mind. you don't have to believe any of it or pick a team. look at a catholic monk and a sufi poet the way you'd look at two trees, and notice what they're both bending toward.</p><p>we like to say we were made in god's image, and then we mostly make god in ours. the people in here did that too. some of them caught themselves at it, and that's where it gets interesting.</p><p>start anywhere. tap a tree. follow a dotted line to somebody they crossed paths with. a dotted underline opens a word. nobody's grading you in here.</p>";
   $('aboutbtn').addEventListener('click', () => openSheet('<h3>what is this</h3>' + ABOUT));
   function openTerm(key) {
     const t = terms[key]; if (!t) return;
