@@ -278,7 +278,7 @@
       <button id="nav-words" data-view="words">words</button>
       <button id="nav-threads" data-view="threads">threads</button>
       <button id="wander" title="open somebody at random">wander</button>
-      <a href="index.html?v=202610191615" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
+      <a href="index.html?v=202610191624" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
     </nav>
   </header>
 
@@ -298,7 +298,7 @@
 <div id="sheet" class="sheet" role="dialog" aria-modal="true" hidden></div>
 <div id="person" class="person" role="dialog" aria-modal="true" hidden></div>
 
-<script src="forest.js?v=202610191615"></script>
+<script src="forest.js?v=202610191624"></script>
 <script>
 (function () {
   const LC = { jewish: 'olive', christian: 'peach', muslim: 'teal', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
@@ -631,15 +631,15 @@
     else if (p.lineage === 'jewish') body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.92}'/><ellipse class='canopy' cx='${x}' cy='${y - h * 0.42}' rx='${w * 0.6}' ry='${h * 0.11}' fill='${c}'/><ellipse class='canopy' cx='${x}' cy='${y - h * 0.66}' rx='${w * 0.44}' ry='${h * 0.1}' fill='${c}'/><ellipse class='canopy' cx='${x}' cy='${y - h * 0.88}' rx='${w * 0.26}' ry='${h * 0.09}' fill='${c}'/>`;
     else if (p.lineage === 'muslim') body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.24}'/><path class='canopy' d='M ${x} ${y - h * 1.08} C ${x + w * 0.44} ${y - h * 0.72} ${x + w * 0.38} ${y - h * 0.26} ${x} ${y - h * 0.22} C ${x - w * 0.38} ${y - h * 0.26} ${x - w * 0.44} ${y - h * 0.72} ${x} ${y - h * 1.08} Z' fill='${c}'/>`;
     else body = `<path d='M ${x} ${y} L ${x} ${y - h * 0.55}'/><path d='M ${x - 3} ${y - h * 0.25} L ${x - 5} ${y - h * 0.22} M ${x + 3} ${y - h * 0.4} L ${x + 5} ${y - h * 0.37}' opacity='.5'/><ellipse class='canopy' cx='${x}' cy='${y - h * 0.72}' rx='${w * 0.32}' ry='${h * 0.3}' fill='${c}'/>`;
-    const label = p.name.length > 16 ? p.name.split(' ').slice(-1)[0] : p.name;
+    const label = p.name.includes(',') ? p.name.split(',').pop().trim() : (p.name.length > 16 ? p.name.split(' ').slice(-1)[0] : p.name);
     const yr = typeof p.born === 'number' ? (p.born < 0 ? Math.abs(p.born) + ' bc' : String(p.born)) : '';
-    const ly = y + 14 + (2 - i) * 9 + 6;
+    const ly = y + 16 + (2 - i) * 11 + 6;
     return `<g class='tree' data-person='${k}' tabindex='0' role='button' aria-label='${esc(p.name)}'>${body}<text x='${x}' y='${ly}' text-anchor='middle'>${esc(label)}</text><text class='yr' x='${x}' y='${ly + 10}' text-anchor='middle'>${esc(yr)}</text></g>`;
   }
   let treePos = {};
   function forestHtml(list) {
     if (!list.length) return '';
-    const W = 1400, bandH = 150, top = 20, left = 24, right = 40;
+    const W = 1400, bandH = 215, top = 20, left = 24, right = 40;
     const bands = {}; GROVES.forEach((g, i) => bands[g] = top + i * bandH);
     treePos = {}; const bandTrees = {};
     GROVES.forEach((g) => {
@@ -654,9 +654,9 @@
       bandTrees[g] = ps.map((p, i) => ({ yr: born(p), x: xs[i] }));
       ps.forEach((p, i) => {
         const age = 2030 - born(p);
-        const size = Math.max(34, Math.min(66, 30 + Math.log(age + 10) * 5.2));
+        const size = Math.round(Math.max(36, Math.min(112, 36 + 76 * (Math.log(age + 10) - Math.log(40)) / (Math.log(2600) - Math.log(40)))));
         const row = i % 3;
-        treePos[p.key] = { x: xs[i], y: bands[g] + bandH - 40 - row * 9, size, row };
+        treePos[p.key] = { x: xs[i], y: bands[g] + bandH - 44 - row * 11, size, row };
       });
     });
     const xAtYear = (g, yr) => { const a = bandTrees[g] || []; if (!a.length) return null; if (yr <= a[0].yr) return a[0].x - 20; for (let i = 1; i < a.length; i++) if (yr <= a[i].yr) { const p0 = a[i - 1], p1 = a[i]; return p1.yr === p0.yr ? p1.x : p0.x + (yr - p0.yr) / (p1.yr - p0.yr) * (p1.x - p0.x); } return a[a.length - 1].x + 20; };
@@ -684,8 +684,42 @@
       const mx = (a.x + b.x) / 2, my = Math.min(a.y, b.y) - 50;
       return `<path class='path' data-a='${esc(ks[0])}' data-b='${esc(ks[1])}' d='M ${a.x} ${a.y - a.size * 0.6} Q ${mx} ${my} ${b.x} ${b.y - b.size * 0.6}'/>`;
     }).join('');
-    const grounds = GROVES.map((g) => { const y = bands[g] + bandH - 40; return `<path d='M ${left} ${y} C 200 ${y - 5} 500 ${y + 5} 800 ${y} S 1300 ${y - 4} ${W - left} ${y}' stroke='var(--rule)' stroke-width='2'/><text class='grove-lbl' x='${left + 2}' y='${bands[g] + 24}'>${esc(LNAME[g])}</text>`; }).join('');
-    const trees = list.filter((p) => treePos[p.key]).sort((a, b) => treePos[a.key].y - treePos[b.key].y || treePos[a.key].x - treePos[b.key].x).map((p, i) => treeSvg(p, treePos[p.key].x, treePos[p.key].y, treePos[p.key].size, treePos[p.key].row)).join('');
+    const hash = (s) => { let x = 7; for (const c of String(s)) x = (x * 31 + c.charCodeAt(0)) >>> 0; return x; };
+    const rnd = (seed) => { let x = hash(seed) || 1; return () => { x ^= x << 13; x >>>= 0; x ^= x >>> 17; x ^= x << 5; x >>>= 0; return (x % 10000) / 10000; }; };
+    const FLW = ['marigold', 'peach', 'lavender', 'clay', 'paper', 'blue'];
+    const defs = `<defs>${GROVES.map((g) => `<linearGradient id='sky-${g}' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='var(--${LC[g]})' stop-opacity='.06'/><stop offset='1' stop-color='var(--${LC[g]})' stop-opacity='.32'/></linearGradient>`).join('')}</defs>`;
+    const grounds = GROVES.map((g, gi) => {
+      const y = bands[g] + bandH - 44, c = `var(--${LC[g]})`, r = rnd(g + 'ground');
+      const y0 = bands[g], y1 = bands[g] + bandH;
+      let out = `<rect x='0' y='${y0}' width='${W}' height='${bandH}' fill='url(#sky-${g})' stroke='none'/>`;
+      // far hills, two layers, soft
+      const h1 = 30 + r() * 26, h2 = 22 + r() * 22, p1 = 150 + r() * 400, p2 = 700 + r() * 500;
+      out += `<path d='M 0 ${y} C ${p1 - 220} ${y - h1 * 0.4} ${p1 - 120} ${y - h1} ${p1} ${y - h1} C ${p1 + 160} ${y - h1} ${p1 + 260} ${y - 8} ${p1 + 420} ${y - 14} C ${p2 - 160} ${y - h2 * 0.6} ${p2 - 120} ${y - h2} ${p2} ${y - h2} C ${p2 + 180} ${y - h2} ${p2 + 300} ${y - 6} ${W} ${y - 10} L ${W} ${y} Z' fill='${c}' opacity='.28' stroke='none'/>`;
+      // the meadow under the ground line, with a wavy edge
+      out += `<path d='M 0 ${y + 2} C 200 ${y - 4} 500 ${y + 6} 800 ${y} S 1300 ${y - 4} ${W} ${y + 1} L ${W} ${y1} L 0 ${y1} Z' fill='${c}' opacity='.55' stroke='none'/>`;
+      out += `<path d='M ${left} ${y} C 200 ${y - 5} 500 ${y + 5} 800 ${y} S 1300 ${y - 4} ${W - left} ${y}' stroke='var(--page-ink)' stroke-width='1.6' opacity='.35'/>`;
+      // flowers in batches, grass between them
+      const batches = 4 + Math.floor(r() * 3);
+      for (let b = 0; b < batches; b++) {
+        const bx = 60 + r() * (W - 120), n = 5 + Math.floor(r() * 6), col = FLW[Math.floor(r() * FLW.length)], col2 = FLW[Math.floor(r() * FLW.length)];
+        for (let i = 0; i < n; i++) {
+          const fx = bx + (r() - .5) * 76, fy = y + 4 + r() * 22, s = .95 + r() * .8;
+          const fc = r() < .7 ? col : col2;
+          out += `<path d='M ${fx.toFixed(1)} ${fy.toFixed(1)} l 0 ${(-7 * s).toFixed(1)}' stroke='var(--page-ink)' stroke-width='1' opacity='.55'/><circle cx='${fx.toFixed(1)}' cy='${(fy - 8 * s).toFixed(1)}' r='${(2.6 * s).toFixed(1)}' fill='var(--${fc})' stroke='var(--page-ink)' stroke-width='.9'/><circle cx='${fx.toFixed(1)}' cy='${(fy - 8 * s).toFixed(1)}' r='.8' fill='var(--page-ink)' stroke='none'/>`;
+        }
+        for (let i = 0; i < 3; i++) { const gx = bx + (r() - .5) * 90, gy = y + 6 + r() * 16; out += `<path d='M ${gx.toFixed(1)} ${gy.toFixed(1)} l -3 -9 M ${(gx + 4).toFixed(1)} ${gy.toFixed(1)} l 1 -11 M ${(gx + 8).toFixed(1)} ${gy.toFixed(1)} l 4 -8' stroke='var(--page-ink)' stroke-width='1' opacity='.4'/>`; }
+      }
+      // sky furniture, different in different groves
+      const cx = 1100 + r() * 220;
+      if (gi % 4 === 0) out += `<circle cx='${cx}' cy='${y0 + 46}' r='20' fill='var(--marigold)' stroke='var(--page-ink)' stroke-width='1.4' opacity='.9'/>`;
+      if (gi % 4 === 2) out += `<path d='M ${cx} ${y0 + 28} C ${cx - 24} ${y0 + 32} ${cx - 24} ${y0 + 62} ${cx} ${y0 + 66} C ${cx - 11} ${y0 + 58} ${cx - 11} ${y0 + 36} ${cx} ${y0 + 28} Z' fill='var(--paper)' stroke='var(--page-ink)' stroke-width='1.4' opacity='.9'/>`;
+      if (gi % 4 === 1) { const bx = 300 + r() * 800; out += `<path d='M ${bx} ${y0 + 40} q 7 -8 14 0 q 7 -8 14 0 M ${bx + 40} ${y0 + 30} q 6 -7 12 0 q 6 -7 12 0' stroke='var(--page-ink)' stroke-width='1.3' opacity='.6'/>`; }
+      if (gi % 2 === 1) { const kx = 200 + r() * 900, ky = y0 + 34 + r() * 20; out += `<path d='M ${kx} ${ky} c -18 0 -18 -20 0 -18 c 5 -18 34 -18 38 -3 c 20 -6 26 12 10 17 c -6 8 -22 8 -26 4 c -4 6 -22 6 -22 0 Z' fill='var(--paper)' stroke='var(--page-ink)' stroke-width='1.2' opacity='.75'/>`; }
+      out += `<text class='grove-lbl' x='${left + 2}' y='${bands[g] + 24}'>${esc(LNAME[g])}</text>`;
+      return out;
+    }).join('');
+    const shadows = list.filter((p) => treePos[p.key]).map((p) => { const t = treePos[p.key]; return `<ellipse cx='${t.x + t.size * 0.12}' cy='${t.y + 2}' rx='${t.size * 0.42}' ry='${3 + t.size * 0.05}' fill='var(--page-ink)' opacity='.1' stroke='none'/>`; }).join('');
+    const trees = shadows + list.filter((p) => treePos[p.key]).sort((a, b) => treePos[a.key].y - treePos[b.key].y || treePos[a.key].x - treePos[b.key].x).map((p, i) => treeSvg(p, treePos[p.key].x, treePos[p.key].y, treePos[p.key].size, treePos[p.key].row)).join('');
     const taoOld = list.filter((p) => p.lineage === 'tao').sort((a, b) => born(a) - born(b))[0];
     const owl = taoOld && treePos[taoOld.key] ? (() => { const t = treePos[taoOld.key]; const sc = 0.9; return `<g transform='translate(${t.x + t.size * 0.22},${t.y - t.size * 0.5 - 27 * sc}) scale(${sc})' fill='none' stroke='var(--page-ink)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' opacity='.85'><ellipse cx='12' cy='15' rx='8' ry='9'/><path d='M6 8 L4 2 L9 6 M18 8 L20 2 L15 6'/><circle cx='8.5' cy='12' r='3'/><circle cx='15.5' cy='12' r='3'/><circle cx='8.5' cy='12' r='1' fill='var(--page-ink)'/><circle cx='15.5' cy='12' r='1' fill='var(--page-ink)'/><path d='M12 14 l -1.5 2.5 h 3 z' fill='var(--page-ink)'/><path d='M9 24 l -2 3 M15 24 l 2 3'/></g>`; })() : '';
     const H = top + bandH * GROVES.length + 6;
@@ -693,7 +727,7 @@
       const petals = [0, 45, 90, 135, 180, 225, 270, 315].map((a) => `<ellipse cx='0' cy='-4.6' rx='1.9' ry='3' transform='rotate(${a})' fill='#F2D389'/>`).join('');
       const f = (fx, hh, sc) => `<path d='M ${fx} ${t.y} L ${fx} ${t.y - hh}'/><path d='M ${fx} ${t.y - hh * 0.4} q 4 -3 5 1' /><g transform='translate(${fx},${t.y - hh - 4 * sc}) scale(${sc})' stroke-width='${1.1 / sc}'>${petals}<circle r='2.6' fill='#D9A98C'/></g>`;
       return `<g stroke-width='1.4' pointer-events='none'>${f(t.x + t.size * 0.5 + 6, 15, 1.15)}${f(t.x + t.size * 0.5 + 19, 8, .9)}${f(t.x + t.size * 0.5 + 30, 12, 1)}</g>`; }).join('');
-    return `<div class="forestwrap"><svg viewBox='0 0 ${W} ${H}' fill='none' stroke='var(--page-ink)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' role='img' aria-label='the whole forest'>${grounds}${forks}${paths}${trees}${favs}${owl}</svg></div>
+    return `<div class="forestwrap"><svg viewBox='0 0 ${W} ${H}' fill='none' stroke='var(--page-ink)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' role='img' aria-label='the whole forest'>${defs}${grounds}${forks}${paths}${trees}${favs}${owl}</svg></div>
       <p class="forest-hint">${['no','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'][GROVES.length] || GROVES.length} groves. in each one the oldest roots are on the left and the newest on the right, and the bigger the tree the older it is. the dotted paths are where two of them crossed. a solid root is where one grove grew out of another. tap a tree, or a root.${favs ? ' sunflowers grow under the favorites.' : ''}${list.length ? ` ${list.length} trees so far.` : ''}</p>`;
   }
   function wireForest() {
