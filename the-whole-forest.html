@@ -8,13 +8,13 @@
 <meta property="og:title" content="the whole forest">
 <meta property="og:description" content="the people the traditions keep quoting, one page each: what they said, what came at them, what they did with it, and every time two of them crossed paths.">
 <meta property="og:url" content="https://sschrader333.github.io/same-forest/the-whole-forest.html">
-<meta property="og:image" content="https://sschrader333.github.io/same-forest/share.png?v=202610291553">
+<meta property="og:image" content="https://sschrader333.github.io/same-forest/share.png?v=202611012236">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="the whole forest">
 <meta name="twitter:description" content="the people the traditions keep quoting, one page each: what they said, what came at them, what they did with it, and every time two of them crossed paths.">
-<meta name="twitter:image" content="https://sschrader333.github.io/same-forest/share.png?v=202610291553">
+<meta name="twitter:image" content="https://sschrader333.github.io/same-forest/share.png?v=202611012236">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 <title>the whole forest</title>
@@ -292,7 +292,7 @@
       <button id="nav-words" data-view="words">words</button>
       <button id="nav-threads" data-view="threads">threads</button>
       <button id="wander" title="open somebody at random">wander</button>
-      <a href="index.html?v=202610291553" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
+      <a href="index.html?v=202611012236" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
     </nav>
   </header>
 
@@ -312,7 +312,7 @@
 <div id="sheet" class="sheet" role="dialog" aria-modal="true" hidden></div>
 <div id="person" class="person" role="dialog" aria-modal="true" hidden></div>
 
-<script src="forest.js?v=202610291553"></script>
+<script src="forest.js?v=202611012236"></script>
 <script>
 (function () {
   const LC = { jewish: 'olive', christian: 'peach', muslim: 'teal', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
@@ -842,7 +842,7 @@
   } catch (e) {}
   boot(); booted = true;
   // the glossary comes in after first paint, so the page shows up fast
-  (function () { const s = document.createElement('script'); s.src = 'forest-terms.js?v=202610291553'; s.onload = function () { accept('terms', window.WHOLE_FOREST_TERMS || []); const h = (location.hash || '').slice(1); if (h.startsWith('w-') && terms[h.slice(2)]) openTerm(h.slice(2)); else if (openKey && people[openKey] && !personEl.hidden) { const sy = window.scrollY; openPerson(openKey); window.scrollTo(0, sy); } }; document.head.appendChild(s); })();
+  (function () { const s = document.createElement('script'); s.src = 'forest-terms.js?v=202611012236'; s.onload = function () { accept('terms', window.WHOLE_FOREST_TERMS || []); const h = (location.hash || '').slice(1); if (h.startsWith('w-') && terms[h.slice(2)]) openTerm(h.slice(2)); else if (openKey && people[openKey] && !personEl.hidden) { const sy = window.scrollY; openPerson(openKey); window.scrollTo(0, sy); } }; document.head.appendChild(s); })();
 
   (async () => {
     const use = window.claude && window.claude.use ? (n) => window.claude.use(n) : () => Promise.resolve(null);
