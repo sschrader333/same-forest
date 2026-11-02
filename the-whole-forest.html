@@ -8,13 +8,13 @@
 <meta property="og:title" content="the whole forest">
 <meta property="og:description" content="the people the traditions keep quoting, one page each: what they said, what came at them, what they did with it, and every time two of them crossed paths.">
 <meta property="og:url" content="https://sschrader333.github.io/same-forest/the-whole-forest.html">
-<meta property="og:image" content="https://sschrader333.github.io/same-forest/share.png?v=202611020221">
+<meta property="og:image" content="https://sschrader333.github.io/same-forest/share.png?v=202611021315">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="the whole forest">
 <meta name="twitter:description" content="the people the traditions keep quoting, one page each: what they said, what came at them, what they did with it, and every time two of them crossed paths.">
-<meta name="twitter:image" content="https://sschrader333.github.io/same-forest/share.png?v=202611020221">
+<meta name="twitter:image" content="https://sschrader333.github.io/same-forest/share.png?v=202611021315">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 <title>the whole forest</title>
@@ -292,7 +292,7 @@
       <button id="nav-words" data-view="words">words</button>
       <button id="nav-threads" data-view="threads">threads</button>
       <button id="wander" title="open somebody at random">wander</button>
-      <a href="index.html?v=202611020221" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
+      <a href="index.html?v=202611021315" title="same forest, today's spread"><span>today's spread </span>&rarr;</a>
     </nav>
   </header>
 
@@ -312,7 +312,7 @@
 <div id="sheet" class="sheet" role="dialog" aria-modal="true" hidden></div>
 <div id="person" class="person" role="dialog" aria-modal="true" hidden></div>
 
-<script src="forest.js?v=202611020221"></script>
+<script src="forest.js?v=202611021315"></script>
 <script>
 (function () {
   const LC = { jewish: 'olive', christian: 'peach', muslim: 'teal', buddhist: 'blue', hindu: 'marigold', tao: 'sage', native: 'clay', other: 'lavender' };
@@ -527,12 +527,12 @@
       ${Array.isArray(p.threads) && p.threads.length ? `<div class="pthreads">${p.threads.filter((t) => THREADS.includes(t)).map((t) => `<button class="chip" data-thread="${esc(t)}">${esc(t)}</button>`).join('')}</div>` : ''}
       ${p.favorite ? `<div class="fav"><span class="fl">${FLOWER}${FLOWER}${FLOWER}</span><p>${esc(p.favorite)}</p></div>` : ''}
       ${p.basically ? `<section class="leadsec"><div class="basically">${markup(p.basically)}</div></section>` : ''}
-      ${Array.isArray(p.love) && p.love.length ? `<section><h2>why the flowers</h2><div class="love">${p.love.map((x) => `<div class="lv"><h3>${esc(x.t)}</h3>${markup(x.d)}</div>`).join('')}</div></section>` : ''}
       <section><div class="story">${markup(p.story)}</div></section>
       ${Array.isArray(p.moments) && p.moments.length ? `<section><h2>a few more things</h2><div class="moments">${p.moments.map((m) => markup(m)).join('')}</div></section>` : ''}
       ${p.struggle ? `<section><h2>what came at them</h2><div class="struggle">${markup(p.struggle)}</div></section>` : ''}
       ${p.mess && !/^nothing [^.]{0,40}\.?$/.test(p.mess.trim()) ? `<section><h2>their own part in it</h2><div class="mess">${markup(p.mess)}</div></section>` : ''}
       ${p.after ? `<section><h2>what they did with it</h2><div class="after">${markup(p.after)}</div></section>` : ''}
+      ${Array.isArray(p.love) && p.love.length ? `<section><h2>why the flowers</h2><div class="love">${p.love.map((x) => `<div class="lv"><h3>${esc(x.t)}</h3>${markup(x.d)}</div>`).join('')}</div></section>` : ''}
       ${Array.isArray(p.said) && p.said.length ? `<section><h2>things they said</h2><div class="said">${p.said.map((s) => `<div><blockquote>${esc(s.q)}</blockquote>${s.where ? `<div class="wh">${esc(s.where)}</div>` : ''}</div>`).join('')}</div></section>` : ''}
       ${Array.isArray(p.try) && p.try.length ? `<section><h2>try it</h2><div class="love tryit">${p.try.map((x) => `<div class="lv"><h3>${esc(x.t)}</h3>${markup(x.d)}</div>`).join('')}</div></section>` : ''}
       ${p.start || (Array.isArray(p.learn) && p.learn.length) ? `<section><h2>read them</h2>${p.start ? `<p class="start">${esc(p.start)}</p>` : ''}` : ''}
@@ -842,7 +842,7 @@
   } catch (e) {}
   boot(); booted = true;
   // the glossary comes in after first paint, so the page shows up fast
-  (function () { const s = document.createElement('script'); s.src = 'forest-terms.js?v=202611020221'; s.onload = function () { accept('terms', window.WHOLE_FOREST_TERMS || []); const h = (location.hash || '').slice(1); if (h.startsWith('w-') && terms[h.slice(2)]) openTerm(h.slice(2)); else if (openKey && people[openKey] && !personEl.hidden) { const sy = window.scrollY; openPerson(openKey); window.scrollTo(0, sy); } }; document.head.appendChild(s); })();
+  (function () { const s = document.createElement('script'); s.src = 'forest-terms.js?v=202611021315'; s.onload = function () { accept('terms', window.WHOLE_FOREST_TERMS || []); const h = (location.hash || '').slice(1); if (h.startsWith('w-') && terms[h.slice(2)]) openTerm(h.slice(2)); else if (openKey && people[openKey] && !personEl.hidden) { const sy = window.scrollY; openPerson(openKey); window.scrollTo(0, sy); } }; document.head.appendChild(s); })();
 
   (async () => {
     const use = window.claude && window.claude.use ? (n) => window.claude.use(n) : () => Promise.resolve(null);
